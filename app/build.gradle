@@ -1,0 +1,58 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.superstar.sukurax.timemanagement"
+        minSdkVersion 21
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    //为了解决部分第三方库重复打包了META-INF的问题
+    packagingOptions{
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    // LeanCloud 基础包
+    implementation ('cn.leancloud.android:avoscloud-sdk:v4.6.4')
+
+    // 推送与实时聊天需要的包
+    implementation ('cn.leancloud.android:avoscloud-push:v4.6.4@aar'){transitive = true}
+
+    // LeanCloud 统计包
+    implementation ('cn.leancloud.android:avoscloud-statistics:v4.6.4')
+
+    // LeanCloud 用户反馈包
+    implementation ('cn.leancloud.android:avoscloud-feedback:v4.6.4@aar')
+
+    // avoscloud-sns：LeanCloud 第三方登录包
+    implementation ('cn.leancloud.android:avoscloud-sns:v4.6.4@aar')
+    implementation ('cn.leancloud.android:qq-sdk:1.6.1-leancloud')
+
+    // LeanCloud 应用内搜索包
+    implementation ('cn.leancloud.android:avoscloud-search:v4.6.4@aar')
+}

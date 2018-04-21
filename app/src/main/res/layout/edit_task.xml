@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginStart="-17dp">
+
+            <!--???为什么会有个17dp的偏移-->
+
+            <include
+                layout="@layout/back_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/linearlayout_height"
+            android:paddingLeft="@dimen/widget_margin_20"
+            android:paddingRight="@dimen/widget_margin_20"
+            android:paddingTop="16dp"
+            android:background="#82abba"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            >
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="输入待办任务"
+                android:paddingLeft="@dimen/text_padding"
+                android:paddingRight="@dimen/text_padding"/>
+        </LinearLayout>
+
+        <LinearLayout style="@style/common_horizontal_division_line_style" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/linearlayout_height"
+            android:background="#a2b4ba"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="执行计划"
+                    android:textColor="@color/urgent1"></RadioButton>
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="随机之事"
+                    android:textColor="@color/urgent2" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="制定计划"
+                    android:textColor="@color/urgent3" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="发呆"
+                    android:textColor="@color/urgent4" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout style="@style/common_horizontal_division_line_style" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00b38c">
+            <DatePicker
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </DatePicker>
+        </LinearLayout>
+
+        <LinearLayout style="@style/common_horizontal_division_line_style" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00b0f0">
+
+            <TimePicker
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </TimePicker>
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/common_horizontal_division_line_style" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="100"
+            android:padding="1dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:background="@drawable/button_shape_left"
+                android:text="Cancle"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:text="Confirm"
+                android:background="@drawable/button_shape_right"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

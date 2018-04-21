@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#DE8100</color>
+    <color name="colorPrimaryDark">#3B200C</color>
+    <color name="colorAccent">#EDE387</color>
+
+    <!--主界面-->
+    <color name="urgent1">#FFF0F5</color>
+    <color name="urgent2">#FFFACD</color>
+    <color name="urgent3">#BFEFFF</color>
+    <color name="urgent4">#C1FFC1</color>
+
+    <color name="bg_white">#EDEDED</color>
+    <color name="bg_white2">#FFFFFF</color>
+</resources>
