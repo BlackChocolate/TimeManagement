@@ -12,4 +12,7 @@
 
     <color name="bg_white">#EDEDED</color>
     <color name="bg_white2">#FFFFFF</color>
+
+    <color name="grey">#ebedf4</color>
+    <color name="lightyellow">#fffea0</color>
 </resources>

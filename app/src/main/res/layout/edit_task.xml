@@ -36,6 +36,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/edit_text"
                 android:hint="输入待办任务"
                 android:paddingLeft="@dimen/text_padding"
                 android:paddingRight="@dimen/text_padding"/>
@@ -53,30 +54,35 @@
             <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/edit_radioG"
                 android:orientation="horizontal">
 
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="执行计划"
-                    android:textColor="@color/urgent1"></RadioButton>
+                    android:id="@+id/edit_radioBt1"
+                    android:textColor="@color/urgent1"/>
 
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="随机之事"
+                    android:id="@+id/edit_radioBt2"
                     android:textColor="@color/urgent2" />
 
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="制定计划"
+                    android:id="@+id/edit_radioBt3"
                     android:textColor="@color/urgent3" />
 
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="发呆"
+                    android:id="@+id/edit_radioBt4"
                     android:textColor="@color/urgent4" />
             </RadioGroup>
         </LinearLayout>
@@ -89,7 +95,8 @@
             android:background="#00b38c">
             <DatePicker
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/date_picker">
 
             </DatePicker>
         </LinearLayout>
@@ -102,7 +109,8 @@
 
             <TimePicker
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/time_picker">
 
             </TimePicker>
 
@@ -121,13 +129,17 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="50"
                 android:background="@drawable/button_shape_left"
-                android:text="Cancle"/>
+                android:id="@+id/edit_cancel"
+                android:text="Cancel"
+                android:layout_marginRight="0.5dp"/>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="50"
                 android:text="Confirm"
-                android:background="@drawable/button_shape_right"/>
+                android:id="@+id/edit_confirm"
+                android:background="@drawable/button_shape_right"
+                android:layout_marginLeft="0.5dp"/>
         </LinearLayout>
 
     </LinearLayout>

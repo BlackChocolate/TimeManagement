@@ -28,6 +28,7 @@
                 android:background="@color/urgent1"
                 android:padding="@dimen/text_padding"
                 android:text="既定"
+                android:id="@+id/task_text1"
                 android:layout_marginRight="@dimen/content_padding"/>
 
             <TextView
@@ -37,6 +38,7 @@
                 android:background="@color/urgent2"
                 android:padding="@dimen/text_padding"
                 android:text="随机"
+                android:id="@+id/task_text2"
                 android:layout_marginLeft="@dimen/content_padding"/>
         </LinearLayout>
 
@@ -55,6 +57,7 @@
                 android:background="@color/urgent3"
                 android:padding="@dimen/text_padding"
                 android:text="无定"
+                android:id="@+id/task_text3"
                 android:layout_marginRight="@dimen/content_padding"/>
 
             <TextView
@@ -64,6 +67,7 @@
                 android:background="@color/urgent4"
                 android:padding="@dimen/text_padding"
                 android:text="随意"
+                android:id="@+id/task_text4"
                 android:layout_marginLeft="@dimen/content_padding"/>
 
         </LinearLayout>

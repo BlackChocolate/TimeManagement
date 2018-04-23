@@ -23,6 +23,8 @@
     <dimen name="linearlayout_height">60dp</dimen>
 
 
+    <dimen name="text_size_16">16sp</dimen>
+
 
 
 </resources>

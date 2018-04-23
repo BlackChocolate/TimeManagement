@@ -1,14 +1,35 @@
 package com.superstar.sukurax.timemanagement;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class EditActivity extends Activity{
     ImageView back;
-    TextView back_text;
+    TextView back_text,edit_text;
+    RadioGroup edit_radioG;
+    DatePicker edit_date;
+    TimePicker edit_time;
+    Button edit_cancel,edit_confirm;
+    RadioButton edit_radioBt1,edit_radioBt2,edit_radioBt3,edit_radioBt4;
+    private Calendar cl;
+    private int year,month,day,hour,minute;
+
+    String date,time;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,12 +42,124 @@ public class EditActivity extends Activity{
                 onBackPressed();
             }
         });
+
+        edit_text=(TextView)findViewById(R.id.edit_text);
+        edit_radioG=(RadioGroup)findViewById(R.id.edit_radioG);
+        edit_date=(DatePicker)findViewById(R.id.date_picker);
+        edit_time=(TimePicker)findViewById(R.id.time_picker);
+        edit_cancel=(Button)findViewById(R.id.edit_cancel);
+        edit_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+        edit_confirm=(Button)findViewById(R.id.edit_confirm);
+
+        edit_radioBt1=(RadioButton)findViewById(R.id.edit_radioBt1);
+        edit_radioBt2=(RadioButton)findViewById(R.id.edit_radioBt2);
+        edit_radioBt3=(RadioButton)findViewById(R.id.edit_radioBt3);
+        edit_radioBt4=(RadioButton)findViewById(R.id.edit_radioBt4);
+
+        cl= Calendar.getInstance();
+        year=cl.get(Calendar.YEAR);
+        month=cl.get(Calendar.MONTH)+1;
+        day=cl.get(Calendar.DAY_OF_MONTH);
+        hour=cl.get(Calendar.HOUR_OF_DAY);
+        minute=cl.get(Calendar.MINUTE);
+
+
+        edit_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer type = 0;
+                if(edit_text.getText().toString().equals("")){
+                    Toast.makeText(EditActivity.this,"任务未填写", Toast.LENGTH_SHORT).show();
+                }else if(edit_radioG.getCheckedRadioButtonId()!=R.id.edit_radioBt1 & edit_radioG.getCheckedRadioButtonId()!=R.id.edit_radioBt2& edit_radioG.getCheckedRadioButtonId()!=R.id.edit_radioBt3 & edit_radioG.getCheckedRadioButtonId()!=R.id.edit_radioBt4){
+                    Toast.makeText(EditActivity.this,"未选择类型", Toast.LENGTH_SHORT).show();
+                }else {
+                    switch (edit_radioG.getCheckedRadioButtonId()){
+                        case R.id.edit_radioBt1:
+                            type=1;
+                            break;
+                        case R.id.edit_radioBt2:
+                            type=2;
+                            break;
+                        case R.id.edit_radioBt3:
+                            type=3;
+                            break;
+                        case R.id.edit_radioBt4:
+                            type=4;
+                            break;
+                        default:
+                            Toast.makeText(EditActivity.this, "类型错误", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                    SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+                    db.execSQL("insert into task (content,type,time) values(?,?,?)",new String[]{edit_text.getText().toString(), type.toString(),date+""+time});
+
+                    Intent intent =  new Intent(getApplication(),MainActivity.class);
+                    startActivity(intent);
+                }
+
+
+            }
+
+
+
+        });
+
+
+        edit_date.init(year, cl.get(Calendar.MONTH), day, new DatePicker.OnDateChangedListener() {
+
+            @Override
+            public void onDateChanged(DatePicker view, int year, int monthOfYear,
+                                      int dayOfMonth) {
+                // TODO Auto-generated method stub
+                setTitle(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
+                date=(year-2000)+"-"+(monthOfYear+1)+"-"+dayOfMonth;
+            }
+        });
+        edit_time.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                // TODO Auto-generated method stub
+                setTitle(hourOfDay+":"+minute);
+                time=hourOfDay+":"+minute;
+            }
+        });
+//弹出类型时间选择器
+//        new DatePickerDialog(this,new DatePickerDialog.OnDateSetListener() {
+//
+//            @Override
+//            public void onDateSet(DatePicker view, int year, int monthOfYear,
+//                                  int dayOfMonth) {
+//                // TODO Auto-generated method stub
+//                setTitle(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
+//            }
+//        }, year,cl.get(Calendar.MONTH), day).show();
+//
+//
+//        new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+//
+//            @Override
+//            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+//                // TODO Auto-generated method stub
+//                setTitle(hourOfDay+":"+minute);
+//            }
+//        }, hour, minute, true).show();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         back_text.setText("设置任务");
+
+        Calendar calendar = Calendar.getInstance();
+        date=(calendar.get(Calendar.YEAR)-2000)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH)+" ";
+        time=calendar.get(Calendar.HOUR_OF_DAY)+"："+calendar.get(Calendar.MINUTE);
     }
 
     @Override

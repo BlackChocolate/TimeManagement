@@ -55,4 +55,6 @@ dependencies {
 
     // LeanCloud 应用内搜索包
     implementation ('cn.leancloud.android:avoscloud-search:v4.6.4@aar')
+
+    implementation 'com.android.support:cardview-v7:26.1.0'
 }
