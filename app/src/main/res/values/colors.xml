@@ -15,4 +15,6 @@
 
     <color name="grey">#ebedf4</color>
     <color name="lightyellow">#fffea0</color>
+    <color name="white_gray">#a2b4ba</color>
+    <color name="text_red">#FF6699</color>
 </resources>

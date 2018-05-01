@@ -5,33 +5,33 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/setting1"
+            android:icon="@drawable/setting1"
+            android:title="当前任务提醒" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/setting2"
+            android:icon="@drawable/setting2"
+            android:title="历史任务" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/setting3"
+            android:icon="@drawable/setting3"
+            android:title="便签" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/setting4"
+            android:icon="@drawable/setting4"
+            android:title="日历" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Setting">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/setting5"
+                android:icon="@drawable/setting5"
+                android:title="提醒设置" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/setting6"
+                android:icon="@drawable/setting6"
+                android:title="换肤" />
         </menu>
     </item>
 

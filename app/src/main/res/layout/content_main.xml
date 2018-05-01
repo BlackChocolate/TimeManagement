@@ -21,25 +21,58 @@
             android:layout_weight="100"
             android:paddingBottom="@dimen/content_padding">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="50"
                 android:background="@color/urgent1"
-                android:padding="@dimen/text_padding"
-                android:text="既定"
-                android:id="@+id/task_text1"
-                android:layout_marginRight="@dimen/content_padding"/>
+                android:layout_weight="50"
+                android:orientation="vertical"
+                android:layout_marginRight="@dimen/content_padding">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/text_padding"
+                    android:text="重要-紧急"
+                    android:textSize="@dimen/text_size_18"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/text_padding"
+                    android:paddingRight="@dimen/text_padding"
+                    android:id="@+id/task_text1"
+                    android:textSize="@dimen/text_size_14"
+                    />
 
-            <TextView
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="50"
                 android:background="@color/urgent2"
-                android:padding="@dimen/text_padding"
-                android:text="随机"
-                android:id="@+id/task_text2"
-                android:layout_marginLeft="@dimen/content_padding"/>
+                android:orientation="vertical"
+                android:layout_weight="50"
+                android:layout_marginLeft="@dimen/content_padding">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/text_padding"
+                    android:text="重要-不紧急"
+                    android:textSize="@dimen/text_size_18"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/text_padding"
+                    android:paddingRight="@dimen/text_padding"
+                    android:textSize="@dimen/text_size_14"
+                    android:id="@+id/task_text2"
+                    />
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -50,25 +83,58 @@
             android:orientation="horizontal"
             android:weightSum="100">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="50"
                 android:background="@color/urgent3"
-                android:padding="@dimen/text_padding"
-                android:text="无定"
-                android:id="@+id/task_text3"
-                android:layout_marginRight="@dimen/content_padding"/>
+                android:orientation="vertical"
+                android:layout_weight="50"
+                android:layout_marginRight="@dimen/content_padding"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/text_padding"
+                    android:textSize="@dimen/text_size_18"
+                    android:text="不重要-紧急"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/text_padding"
+                    android:paddingRight="@dimen/text_padding"
+                    android:textSize="@dimen/text_size_14"
+                    android:id="@+id/task_text3"
+                    />
 
-            <TextView
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="50"
                 android:background="@color/urgent4"
-                android:padding="@dimen/text_padding"
-                android:text="随意"
-                android:id="@+id/task_text4"
-                android:layout_marginLeft="@dimen/content_padding"/>
+                android:orientation="vertical"
+                android:layout_weight="50"
+                android:layout_marginLeft="@dimen/content_padding"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/text_padding"
+                    android:textSize="@dimen/text_size_18"
+                    android:text="不重要-不紧急"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/text_padding"
+                    android:paddingRight="@dimen/text_padding"
+                    android:textSize="@dimen/text_size_14"
+                    android:id="@+id/task_text4"
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
 

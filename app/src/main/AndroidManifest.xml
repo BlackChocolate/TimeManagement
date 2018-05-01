@@ -22,7 +22,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -46,6 +45,10 @@
         <!-- 反馈组件 END -->
 
         <activity android:name=".EditActivity"/>
+        <activity android:name=".RemindSettingActivity"/>
+        <activity android:name=".NoteActivity"/>
+        <activity android:name=".NoteAddActivity"/>
+        <activity android:name=".NoteChangeActivity"/>
     </application>
 
 </manifest>

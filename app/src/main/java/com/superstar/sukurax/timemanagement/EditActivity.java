@@ -75,6 +75,8 @@ public class EditActivity extends Activity{
                 Integer type = 0;
                 if(edit_text.getText().toString().equals("")){
                     Toast.makeText(EditActivity.this,"任务未填写", Toast.LENGTH_SHORT).show();
+                }else if(edit_text.getText().toString().length()>=11){
+                    Toast.makeText(EditActivity.this,"任务过长，请简略叙述", Toast.LENGTH_SHORT).show();
                 }else if(edit_radioG.getCheckedRadioButtonId()!=R.id.edit_radioBt1 & edit_radioG.getCheckedRadioButtonId()!=R.id.edit_radioBt2& edit_radioG.getCheckedRadioButtonId()!=R.id.edit_radioBt3 & edit_radioG.getCheckedRadioButtonId()!=R.id.edit_radioBt4){
                     Toast.makeText(EditActivity.this,"未选择类型", Toast.LENGTH_SHORT).show();
                 }else {
@@ -96,9 +98,11 @@ public class EditActivity extends Activity{
                             break;
                     }
                     SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
-                    db.execSQL("insert into task (content,type,time) values(?,?,?)",new String[]{edit_text.getText().toString(), type.toString(),date+""+time});
+                    db.execSQL("insert into task (content,type,time) values(?,?,?)",new String[]{edit_text.getText().toString(), type.toString(),date+" "+time});
 
                     Intent intent =  new Intent(getApplication(),MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                 }
 
@@ -158,7 +162,7 @@ public class EditActivity extends Activity{
         back_text.setText("设置任务");
 
         Calendar calendar = Calendar.getInstance();
-        date=(calendar.get(Calendar.YEAR)-2000)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH)+" ";
+        date=(calendar.get(Calendar.YEAR)-2000)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
         time=calendar.get(Calendar.HOUR_OF_DAY)+"："+calendar.get(Calendar.MINUTE);
     }
 
@@ -166,4 +170,6 @@ public class EditActivity extends Activity{
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+
 }

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="-17dp">
+
+        <!--???为什么会有个17dp的偏移-->
+        <include
+            layout="@layout/back_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/padding_20"
+            android:gravity="top"
+            android:id="@+id/note_edittext"
+            android:textSize="@dimen/text_size_18"
+            android:hint="输入你想修改的内容"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/widget_margin"
+        android:weightSum="100">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:textSize="@dimen/text_size_16"
+            android:gravity="center"
+            android:text="取消"
+            android:id="@+id/note_change_cancel"
+            android:layout_marginRight="@dimen/content_padding"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:gravity="center"
+            android:id="@+id/note_change_delete"
+            android:textSize="@dimen/text_size_16"
+            android:textColor="@color/text_red"
+            android:layout_marginRight="@dimen/content_padding"
+            android:layout_marginLeft="@dimen/content_padding"
+            android:text="删除"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:gravity="center"
+            android:id="@+id/note_change_confirm"
+            android:textSize="@dimen/text_size_16"
+            android:textColor="@color/avoscloud_blue"
+            android:layout_marginLeft="@dimen/content_padding"
+            android:text="完成"/>
+    </LinearLayout>
+</LinearLayout>
+
+
+

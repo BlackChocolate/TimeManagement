@@ -8,6 +8,8 @@
 
     <!--文字内间距-->
     <dimen name="text_padding">10dp</dimen>
+    <dimen name="padding_15">15dp</dimen>
+    <dimen name="padding_20">20dp</dimen>
     <!--控件外间距-->
     <dimen name="widget_margin">15dp</dimen>
     <dimen name="widget_margin_20">20dp</dimen>
@@ -22,8 +24,9 @@
     <dimen name="pic_size_back">26dp</dimen>
     <dimen name="linearlayout_height">60dp</dimen>
 
-
+    <dimen name="text_size_18">18sp</dimen>
     <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
 
 
 

@@ -32,7 +32,6 @@ import okhttp3.OkHttpClient;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Toolbar toolbar;
-    SQLiteDatabase db;
     static DatebaseHelper datebaseHelper;
     TextView task_text1,task_text2,task_text3,task_text4;
     @Override
@@ -109,21 +108,21 @@ public class MainActivity extends AppCompatActivity
         Cursor cursor=datebaseHelper.getReadableDatabase().rawQuery(
                 "select * from task ",new String[]{}
         );
-        String value1 = "既定\n",value2="随机\n",value3="无定\n",value4 = "随意\n";
+        String value1 = "",value2="",value3="",value4 = "";
         if (cursor.moveToFirst()) {
             do{
                 switch (cursor.getString(cursor.getColumnIndex("type"))) {
                     case "1":
-                        value1+=cursor.getString(cursor.getColumnIndex("content"))+" "+cursor.getString(cursor.getColumnIndex("time"))+"\n";
+                        value1+=cursor.getString(cursor.getColumnIndex("content"))+"\n";
                         break;
                     case "2":
-                        value2+=cursor.getString(cursor.getColumnIndex("content"))+" "+cursor.getString(cursor.getColumnIndex("time"))+"\n";
+                        value2+=cursor.getString(cursor.getColumnIndex("content"))+"\n";
                         break;
                     case "3":
-                        value3+=cursor.getString(cursor.getColumnIndex("content"))+" "+cursor.getString(cursor.getColumnIndex("time"))+"\n";
+                        value3+=cursor.getString(cursor.getColumnIndex("content"))+"\n";
                         break;
                     case "4":
-                        value4+=cursor.getString(cursor.getColumnIndex("content"))+" "+cursor.getString(cursor.getColumnIndex("time"))+"\n";
+                        value4+=cursor.getString(cursor.getColumnIndex("content"))+"\n";
                         break;
                     default:
                         Toast.makeText(MainActivity.this, "获取星期错误", Toast.LENGTH_SHORT).show();
@@ -164,8 +163,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            setContentView(R.layout.remind_setting);
+        if (id == R.id.synchronize) {
+//      setContentView(R.layout.remind_setting);
+            return true;
+        }else if(id==R.id.login){
             return true;
         }
 
@@ -178,17 +179,19 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.setting1) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.setting2) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.setting3) {
+            Intent intent =  new Intent(getApplication(),NoteActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.setting4) {
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.setting5) {
+            Intent intent =  new Intent(getApplication(),RemindSettingActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.setting6) {
 
         }
 

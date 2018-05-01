@@ -60,28 +60,28 @@
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="执行计划"
+                    android:text="重要紧急"
                     android:id="@+id/edit_radioBt1"
                     android:textColor="@color/urgent1"/>
 
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="随机之事"
+                    android:text="重要不紧急"
                     android:id="@+id/edit_radioBt2"
                     android:textColor="@color/urgent2" />
 
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="制定计划"
+                    android:text="紧急不重要"
                     android:id="@+id/edit_radioBt3"
                     android:textColor="@color/urgent3" />
 
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="发呆"
+                    android:text="随意"
                     android:id="@+id/edit_radioBt4"
                     android:textColor="@color/urgent4" />
             </RadioGroup>
