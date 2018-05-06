@@ -13,62 +13,66 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="200">
+
         <LinearLayout
+            android:id="@+id/urgentToplinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="100"
+            android:layout_height="match_parent"
             android:layout_weight="100"
-            android:paddingBottom="@dimen/content_padding">
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/content_padding"
+            android:weightSum="100">
 
             <LinearLayout
+                android:id="@+id/urgent1linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/urgent1"
+                android:layout_marginRight="@dimen/content_padding"
                 android:layout_weight="50"
-                android:orientation="vertical"
-                android:layout_marginRight="@dimen/content_padding">
+                android:background="@color/urgent1"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/text_padding"
                     android:text="重要-紧急"
-                    android:textSize="@dimen/text_size_18"
-                    />
+                    android:textSize="@dimen/text_size_18" />
+
                 <TextView
+                    android:id="@+id/task_text1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingLeft="@dimen/text_padding"
                     android:paddingRight="@dimen/text_padding"
-                    android:id="@+id/task_text1"
-                    android:textSize="@dimen/text_size_14"
-                    />
+                    android:textSize="@dimen/text_size_14" />
 
             </LinearLayout>
 
 
             <LinearLayout
+                android:id="@+id/urgent2linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/urgent2"
-                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/content_padding"
                 android:layout_weight="50"
-                android:layout_marginLeft="@dimen/content_padding">
+                android:background="@color/urgent2"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/text_padding"
                     android:text="重要-不紧急"
-                    android:textSize="@dimen/text_size_18"
-                    />
+                    android:textSize="@dimen/text_size_18" />
+
                 <TextView
+                    android:id="@+id/task_text2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingLeft="@dimen/text_padding"
                     android:paddingRight="@dimen/text_padding"
-                    android:textSize="@dimen/text_size_14"
-                    android:id="@+id/task_text2"
-                    />
+                    android:textSize="@dimen/text_size_14" />
 
             </LinearLayout>
 
@@ -76,63 +80,65 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/urgentBottomlinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/content_padding"
+            android:layout_height="match_parent"
             android:layout_weight="100"
             android:orientation="horizontal"
+            android:paddingTop="@dimen/content_padding"
+            android:visibility="visible"
             android:weightSum="100">
 
             <LinearLayout
+                android:id="@+id/urgent3linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/urgent3"
-                android:orientation="vertical"
-                android:layout_weight="50"
                 android:layout_marginRight="@dimen/content_padding"
-                >
+                android:layout_weight="50"
+                android:background="@color/urgent3"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/text_padding"
-                    android:textSize="@dimen/text_size_18"
                     android:text="不重要-紧急"
-                    />
+                    android:textSize="@dimen/text_size_18" />
+
                 <TextView
+                    android:id="@+id/task_text3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingLeft="@dimen/text_padding"
                     android:paddingRight="@dimen/text_padding"
-                    android:textSize="@dimen/text_size_14"
-                    android:id="@+id/task_text3"
-                    />
+                    android:textSize="@dimen/text_size_14" />
 
             </LinearLayout>
 
 
             <LinearLayout
+                android:id="@+id/urgent4linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/urgent4"
-                android:orientation="vertical"
-                android:layout_weight="50"
                 android:layout_marginLeft="@dimen/content_padding"
-                >
+                android:layout_weight="50"
+                android:background="@color/urgent4"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/text_padding"
-                    android:textSize="@dimen/text_size_18"
                     android:text="不重要-不紧急"
-                    />
+                    android:textSize="@dimen/text_size_18" />
+
                 <TextView
+                    android:id="@+id/task_text4"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingLeft="@dimen/text_padding"
                     android:paddingRight="@dimen/text_padding"
-                    android:textSize="@dimen/text_size_14"
-                    android:id="@+id/task_text4"
-                    />
+                    android:textSize="@dimen/text_size_14" />
 
             </LinearLayout>
 

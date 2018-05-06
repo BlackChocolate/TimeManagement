@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatebaseHelper extends SQLiteOpenHelper {
     final String CREATE_TABLE_TASK=
             "create table task(_id integer primary "+
-                    "key autoincrement,content,type,time)";
+                    "key autoincrement,content,type,time,state)";
     final String CREATE_TABLE_NOTE=
             "create table note(_id integer primary "+
                     "key autoincrement,note_time,note_content)";

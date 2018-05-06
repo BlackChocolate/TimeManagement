@@ -33,13 +33,12 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             >
+
             <EditText
+                android:id="@+id/edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/edit_text"
-                android:hint="输入待办任务"
-                android:paddingLeft="@dimen/text_padding"
-                android:paddingRight="@dimen/text_padding"/>
+                android:hint="输入待办任务" />
         </LinearLayout>
 
         <LinearLayout style="@style/common_horizontal_division_line_style" />
@@ -130,13 +129,13 @@
                 android:layout_weight="50"
                 android:background="@drawable/button_shape_left"
                 android:id="@+id/edit_cancel"
-                android:text="Cancel"
+                android:text="取消"
                 android:layout_marginRight="0.5dp"/>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="50"
-                android:text="Confirm"
+                android:text="新建"
                 android:id="@+id/edit_confirm"
                 android:background="@drawable/button_shape_right"
                 android:layout_marginLeft="0.5dp"/>

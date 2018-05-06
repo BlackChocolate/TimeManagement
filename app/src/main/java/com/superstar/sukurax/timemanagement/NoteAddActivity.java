@@ -1,9 +1,12 @@
 package com.superstar.sukurax.timemanagement;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,12 +20,29 @@ public class NoteAddActivity extends Activity {
     TextView back_toolbar_text,note_add_cancel,note_add_confirm;
     EditText note_edittext;
     String date,time;
+    SharedPreferences sp;
+    Toolbar back_toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sp= getSharedPreferences("TimeManagement", Context.MODE_PRIVATE);
+        switch (sp.getInt("skin_num", 1)){
+            case 1:
+                setTheme(R.style.AppTheme);
+                break;
+            case 2:
+                setTheme(R.style.AppTheme2);
+                break;
+            case 3:
+                setTheme(R.style.AppTheme3);
+                break;
+            default:
+                break;
+        }
         setContentView(R.layout.note_add);
         back_toolbar_pic=(ImageView)findViewById(R.id.back_toolbar_pic);
         back_toolbar_text=(TextView) findViewById(R.id.back_toolbar_text);
+        back_toolbar=(Toolbar)findViewById(R.id.back_toolbar);
         back_toolbar_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +82,19 @@ public class NoteAddActivity extends Activity {
     protected void onResume() {
         super.onResume();
         back_toolbar_text.setText("新建便签");
+        switch (sp.getInt("skin_num", 1)){
+            case 1:
+                back_toolbar.setBackgroundColor(getResources().getColor(R.color.skinColor1_2));
+                break;
+            case 2:
+                back_toolbar.setBackgroundColor(getResources().getColor(R.color.skinColor2_2));
+                break;
+            case 3:
+                back_toolbar.setBackgroundColor(getResources().getColor(R.color.skinColor3_2));
+                break;
+            default:
+                break;
+        }
 
         Calendar calendar = Calendar.getInstance();
         date=(calendar.get(Calendar.YEAR))+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH);

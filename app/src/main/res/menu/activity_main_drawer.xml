@@ -32,6 +32,14 @@
                 android:id="@+id/setting6"
                 android:icon="@drawable/setting6"
                 android:title="换肤" />
+            <item
+                android:id="@+id/setting7"
+                android:icon="@drawable/synchronize"
+                android:title="备份/同步" />
+            <item
+                android:id="@+id/setting8"
+                android:icon="@drawable/login"
+                android:title="注销/登录" />
         </menu>
     </item>
 

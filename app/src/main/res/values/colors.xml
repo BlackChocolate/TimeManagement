@@ -10,11 +10,24 @@
     <color name="urgent3">#BFEFFF</color>
     <color name="urgent4">#C1FFC1</color>
 
-    <color name="bg_white">#EDEDED</color>
-    <color name="bg_white2">#FFFFFF</color>
+    <color name="bg_grey">#f4f4f4</color>
+    <color name="white">#FFFFFF</color>
 
     <color name="grey">#ebedf4</color>
     <color name="lightyellow">#fffea0</color>
     <color name="white_gray">#a2b4ba</color>
     <color name="text_red">#FF6699</color>
+
+
+    <color name="skinColor1_1">#EDE387</color>
+    <color name="skinColor1_2">#DE8100</color>
+    <color name="skinColor1_3">#3B200C</color>
+
+    <color name="skinColor2_1">#ffebcc</color>
+    <color name="skinColor2_2">#ffb86c</color>
+    <color name="skinColor2_3">#f01b2d</color>
+
+    <color name="skinColor3_1">#83fcd8</color>
+    <color name="skinColor3_2">#8192d6</color>
+    <color name="skinColor3_3">#81c2d6</color>
 </resources>

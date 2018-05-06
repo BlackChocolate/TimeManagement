@@ -3,9 +3,12 @@ package com.superstar.sukurax.timemanagement;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -28,14 +31,32 @@ public class EditActivity extends Activity{
     RadioButton edit_radioBt1,edit_radioBt2,edit_radioBt3,edit_radioBt4;
     private Calendar cl;
     private int year,month,day,hour,minute;
-
     String date,time;
+    SharedPreferences sp;
+    Toolbar  back_toolbar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sp= getSharedPreferences("TimeManagement", Context.MODE_PRIVATE);
+        switch (sp.getInt("skin_num", 1)){
+            case 1:
+                setTheme(R.style.AppTheme);
+                break;
+            case 2:
+                setTheme(R.style.AppTheme2);
+                break;
+            case 3:
+                setTheme(R.style.AppTheme3);
+                break;
+            default:
+                break;
+        }
+
         setContentView(R.layout.edit_task);
+
         back=(ImageView)findViewById(R.id.back_toolbar_pic);
         back_text=(TextView)findViewById(R.id.back_toolbar_text);
+        back_toolbar=(Toolbar)findViewById(R.id.back_toolbar);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,7 +119,7 @@ public class EditActivity extends Activity{
                             break;
                     }
                     SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
-                    db.execSQL("insert into task (content,type,time) values(?,?,?)",new String[]{edit_text.getText().toString(), type.toString(),date+" "+time});
+                    db.execSQL("insert into task (content,type,time,state) values(?,?,?,?)",new String[]{edit_text.getText().toString(), type.toString(),date+" "+time,"0"});
 
                     Intent intent =  new Intent(getApplication(),MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -164,6 +185,20 @@ public class EditActivity extends Activity{
         Calendar calendar = Calendar.getInstance();
         date=(calendar.get(Calendar.YEAR)-2000)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
         time=calendar.get(Calendar.HOUR_OF_DAY)+"："+calendar.get(Calendar.MINUTE);
+
+        switch (sp.getInt("skin_num", 1)){
+            case 1:
+                back_toolbar.setBackgroundColor(getResources().getColor(R.color.skinColor1_2));
+                break;
+            case 2:
+                back_toolbar.setBackgroundColor(getResources().getColor(R.color.skinColor2_2));
+                break;
+            case 3:
+                back_toolbar.setBackgroundColor(getResources().getColor(R.color.skinColor3_2));
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

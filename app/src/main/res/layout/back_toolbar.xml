@@ -2,28 +2,33 @@
 <android.support.v7.widget.Toolbar android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/back_toolbar"
     >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/colorPrimary"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        >
 
         <ImageView
             android:layout_width="@dimen/pic_size_back"
             android:layout_height="@dimen/pic_size_back"
             android:id="@+id/back_toolbar_pic"
             android:background="@drawable/back"
-            android:layout_margin="@dimen/widget_margin" />
+            android:layout_margin="@dimen/widget_margin"
+            />
 
         <TextView
-            android:padding="@dimen/text_padding"
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/back_toolbar_text"
+            android:layout_width="0dp"
+            android:layout_marginLeft="-41dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/bg_white"
-            android:textSize="@dimen/text_size_title"
-            android:id="@+id/back_toolbar_text"/>
+            android:padding="@dimen/text_padding"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_title" />
     </LinearLayout>
 
 

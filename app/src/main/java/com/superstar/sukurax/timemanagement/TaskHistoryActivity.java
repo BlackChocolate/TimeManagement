@@ -2,22 +2,18 @@ package com.superstar.sukurax.timemanagement;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +22,7 @@ import java.util.Map;
 
 import static com.superstar.sukurax.timemanagement.MainActivity.datebaseHelper;
 
-public class NoteActivity extends Activity {
+public class TaskHistoryActivity extends Activity {
     ImageView back_toolbar_pic;
     TextView back_toolbar_text;
     LinearLayout switch_empty,switch_something;
@@ -34,7 +30,7 @@ public class NoteActivity extends Activity {
     private ListView listView;
     private List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
     SharedPreferences sp;
-    android.support.v7.widget.Toolbar back_toolbar;
+    Toolbar back_toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +48,11 @@ public class NoteActivity extends Activity {
             default:
                 break;
         }
-
-
-        setContentView(R.layout.note_main);
-        listView = (ListView) findViewById(R.id.note_list);
+        setContentView(R.layout.task_history);
+        listView = (ListView) findViewById(R.id.task_history_list);
         back_toolbar_pic=(ImageView)findViewById(R.id.back_toolbar_pic);
         back_toolbar_text=(TextView) findViewById(R.id.back_toolbar_text);
-        back_toolbar=(android.support.v7.widget.Toolbar)findViewById(R.id.back_toolbar);
+        back_toolbar=(Toolbar)findViewById(R.id.back_toolbar);
         back_toolbar_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,20 +63,12 @@ public class NoteActivity extends Activity {
         switch_empty=(LinearLayout)findViewById(R.id.switch_empty);
         switch_something=(LinearLayout)findViewById(R.id.switch_something);
 
-        FloatingActionButton fab_note_add = (FloatingActionButton) findViewById(R.id.fab_note_add);
-        fab_note_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent =  new Intent(getApplication(),NoteAddActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        back_toolbar_text.setText("便签");
+        back_toolbar_text.setText("历史任务");
         switch (sp.getInt("skin_num", 1)){
             case 1:
                 back_toolbar.setBackgroundColor(getResources().getColor(R.color.skinColor1_2));
@@ -97,22 +83,25 @@ public class NoteActivity extends Activity {
                 break;
         }
 
-
-
         data.clear();
 
         //加载SQLite数据库
         Cursor cursor=datebaseHelper.getReadableDatabase().rawQuery(
-                "select * from note ",new String[]{}
+                "select * from task ",new String[]{}
         );
         if (cursor.moveToFirst()) {
             do{
                 Map<String, Object> item = new HashMap<String, Object>();
                 item.put("_id", cursor.getString(cursor.getColumnIndex("_id")));
-                item.put("note_time", cursor.getString(cursor.getColumnIndex("note_time")));
-                item.put("note_content", cursor.getString(cursor.getColumnIndex("note_content")));
-                data.add(item);
+                item.put("time", cursor.getString(cursor.getColumnIndex("time")));
+                item.put("content", cursor.getString(cursor.getColumnIndex("content")));
+                if(cursor.getString(cursor.getColumnIndex("state")).equals("0")){
+                    item.put("state", "未完成");
+                }else if(cursor.getString(cursor.getColumnIndex("state")).equals("1")){
+                    item.put("state", "已完成");
+                }
 
+                data.add(item);
             }while (cursor.moveToNext());
         }
 
@@ -123,9 +112,9 @@ public class NoteActivity extends Activity {
             simpleAdapter = new SimpleAdapter(
                     this,
                     data,
-                    R.layout.note_list_item,
-                    new String[] { "_id","note_time", "note_content" },// 与下面数组元素要一一对应
-                    new int[] {R.id.note_id,R.id.note_time, R.id.note_content });
+                    R.layout.task_history_list_item,
+                    new String[] { "_id","time", "content","state" },// 与下面数组元素要一一对应
+                    new int[] {R.id.task_history_id,R.id.task_history_time, R.id.task_history_content ,R.id.task_history_state});
 
             listView.setAdapter(simpleAdapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -134,9 +123,9 @@ public class NoteActivity extends Activity {
                     Map<String,Object> map = data.get(i);
                     String _id = map.get("_id").toString();
 
-                    Intent intent =  new Intent(getApplication(),NoteChangeActivity.class);
-                    intent.putExtra("_id",_id);
-                    startActivity(intent);
+//                    Intent intent =  new Intent(getApplication(),NoteChangeActivity.class);
+//                    intent.putExtra("_id",_id);
+//                    startActivity(intent);
                 }
             });
         }

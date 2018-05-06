@@ -21,7 +21,7 @@
         android:text="内容"
         android:id="@+id/note_content"
         android:textSize="@dimen/text_size_18"
-        android:lines="1"
+        android:maxLines="1"
         android:ellipsize="end"/>
 
 </LinearLayout>
