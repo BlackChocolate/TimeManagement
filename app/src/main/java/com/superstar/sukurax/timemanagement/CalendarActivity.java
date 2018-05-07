@@ -42,6 +42,15 @@ public class CalendarActivity extends Activity {
             case 3:
                 setTheme(R.style.AppTheme3);
                 break;
+            case 4:
+                setTheme(R.style.AppTheme4);
+                break;
+            case 5:
+                setTheme(R.style.AppTheme5);
+                break;
+            case 6:
+                setTheme(R.style.AppTheme6);
+                break;
             default:
                 break;
         }
@@ -74,6 +83,15 @@ public class CalendarActivity extends Activity {
                 break;
             case 3:
                 back_toolbar.setBackgroundColor(getResources().getColor(R.color.skinColor3_2));
+                break;
+            case 4:
+                back_toolbar.setBackgroundColor(getResources().getColor(R.color.skinColor4_2));
+                break;
+            case 5:
+                back_toolbar.setBackgroundColor(getResources().getColor(R.color.skinColor5_2));
+                break;
+            case 6:
+                back_toolbar.setBackgroundColor(getResources().getColor(R.color.skinColor6_2));
                 break;
             default:
                 break;

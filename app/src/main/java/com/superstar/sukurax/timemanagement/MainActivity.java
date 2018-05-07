@@ -105,6 +105,15 @@ public class MainActivity extends Activity
             case 3:
                 nav.setBackgroundColor(getResources().getColor(R.color.skinColor3_2));
                 break;
+            case 4:
+                nav.setBackgroundColor(getResources().getColor(R.color.skinColor4_2));
+                break;
+            case 5:
+                nav.setBackgroundColor(getResources().getColor(R.color.skinColor5_2));
+                break;
+            case 6:
+                nav.setBackgroundColor(getResources().getColor(R.color.skinColor6_2));
+                break;
             default:
                 break;
         }
@@ -192,10 +201,11 @@ public class MainActivity extends Activity
     private  void setNotification() {
         //设置一个Intent,不然点击通知不会自动消失
         Intent resultIntent = new Intent(this, MainActivity.class);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(
                 this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.notification_pic)
                 .setContentTitle("明日计划通")
                 .setContentText("执行中任务:"+undoneTask)
                 .setContentIntent(resultPendingIntent);
@@ -218,6 +228,15 @@ public class MainActivity extends Activity
                 break;
             case 3:
                 setTheme(R.style.AppTheme3);
+                break;
+            case 4:
+                setTheme(R.style.AppTheme4);
+                break;
+            case 5:
+                setTheme(R.style.AppTheme5);
+                break;
+            case 6:
+                setTheme(R.style.AppTheme6);
                 break;
             default:
                 break;

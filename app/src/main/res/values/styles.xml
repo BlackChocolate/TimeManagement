@@ -21,7 +21,30 @@
         <item name="colorPrimaryDark">@color/skinColor3_3</item>
         <item name="colorAccent">@color/skinColor3_1</item>
     </style>
+    <style name="AppTheme4" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/skinColor4_2</item>
+        <item name="colorPrimaryDark">@color/skinColor4_3</item>
+        <item name="colorAccent">@color/skinColor4_1</item>
+    </style>
 
+    <style name="AppTheme5" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/skinColor5_2</item>
+        <item name="colorPrimaryDark">@color/skinColor5_3</item>
+        <item name="colorAccent">@color/skinColor5_1</item>
+    </style>
+
+    <style name="AppTheme6" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/skinColor6_2</item>
+        <item name="colorPrimaryDark">@color/skinColor6_3</item>
+        <item name="colorAccent">@color/skinColor6_1</item>
+    </style>
+
+    <style name="AppWelcome" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/welcome</item>
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

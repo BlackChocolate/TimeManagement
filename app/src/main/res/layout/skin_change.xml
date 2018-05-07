@@ -164,6 +164,154 @@
         </android.support.v7.widget.CardView>
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/text_padding"
+        android:gravity="center">
 
+        <android.support.v7.widget.CardView
+            android:layout_width="100dp"
+            android:layout_height="160dp"
+            android:id="@+id/skin4"
+            android:layout_marginRight="@dimen/widget_margin">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="粉红佳人"
+                        android:gravity="center"/>
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="@dimen/widget_width_30"
+                        android:layout_weight="1"
+                        android:id="@+id/skin4_pic"
+                        android:src="@drawable/confirm"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/skinColor4_1"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/skinColor4_2"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/skinColor4_3"/>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="100dp"
+            android:id="@+id/skin5"
+            android:layout_height="160dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="薰衣草"
+                        android:gravity="center"/>
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="@dimen/widget_width_30"
+                        android:layout_weight="1"
+                        android:id="@+id/skin5_pic"
+                        android:src="@drawable/confirm"
+                        android:visibility="gone" />
+                </LinearLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/skinColor5_1"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/skinColor5_2"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/skinColor5_3"/>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="100dp"
+            android:layout_height="160dp"
+            android:id="@+id/skin6"
+            android:layout_marginLeft="@dimen/widget_margin">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="乘风破浪"
+                        android:gravity="center"/>
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="@dimen/widget_width_30"
+                        android:layout_weight="1"
+                        android:id="@+id/skin6_pic"
+                        android:src="@drawable/confirm"
+                        android:visibility="gone" />
+                </LinearLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/skinColor6_1"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/skinColor6_2"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/skinColor6_3"/>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
 
 </LinearLayout>

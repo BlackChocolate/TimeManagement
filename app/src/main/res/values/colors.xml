@@ -30,4 +30,16 @@
     <color name="skinColor3_1">#83fcd8</color>
     <color name="skinColor3_2">#8192d6</color>
     <color name="skinColor3_3">#81c2d6</color>
+
+    <color name="skinColor4_1">#ffe3fb</color>
+    <color name="skinColor4_2">#ffdec9</color>
+    <color name="skinColor4_3">#e6109b</color>
+
+    <color name="skinColor5_1">#f2f2f2</color>
+    <color name="skinColor5_2">#d6d0ce</color>
+    <color name="skinColor5_3">#8977b3</color>
+
+    <color name="skinColor6_1">#c7e1f0</color>
+    <color name="skinColor6_2">#96c4e6</color>
+    <color name="skinColor6_3">#194d5b</color>
 </resources>
