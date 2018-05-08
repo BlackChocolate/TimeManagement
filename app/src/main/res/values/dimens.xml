@@ -28,6 +28,7 @@
     <dimen name="text_size_16">16sp</dimen>
     <dimen name="text_size_14">14sp</dimen>
     <dimen name="widget_width_30">30dp</dimen>
+    <dimen name="padding_25">25dp</dimen>
 
 
 </resources>

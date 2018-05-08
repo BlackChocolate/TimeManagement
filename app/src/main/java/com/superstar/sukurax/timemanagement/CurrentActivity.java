@@ -166,8 +166,8 @@ public class CurrentActivity extends Activity {
                 public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
                     final AlertDialog.Builder normalDialog =
                             new AlertDialog.Builder(CurrentActivity.this);
-                    normalDialog.setTitle("改为已完成？");
-                    normalDialog.setMessage("该事项将取消提醒");
+                    normalDialog.setTitle("取消事项提醒");
+                    normalDialog.setMessage("改为已完成？");
                     normalDialog.setPositiveButton("确定",
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -202,8 +202,8 @@ public class CurrentActivity extends Activity {
                 public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
                     final AlertDialog.Builder normalDialog =
                             new AlertDialog.Builder(CurrentActivity.this);
-                    normalDialog.setTitle("改为执行中？");
-                    normalDialog.setMessage("该事项将添加提醒");
+                    normalDialog.setTitle("添加事项提醒");
+                    normalDialog.setMessage("改为执行中？");
                     normalDialog.setPositiveButton("确定",
                             new DialogInterface.OnClickListener() {
                                 @Override

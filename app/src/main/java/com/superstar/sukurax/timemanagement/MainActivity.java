@@ -200,7 +200,7 @@ public class MainActivity extends Activity
 
     private  void setNotification() {
         //设置一个Intent,不然点击通知不会自动消失
-        Intent resultIntent = new Intent(this, MainActivity.class);
+        Intent resultIntent = new Intent(this, CurrentActivity.class);
         resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(
                 this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
