@@ -116,11 +116,15 @@ public class NoteAddActivity extends Activity {
 
         Calendar calendar = Calendar.getInstance();
         date=(calendar.get(Calendar.YEAR))+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
-        time=calendar.get(Calendar.HOUR_OF_DAY)+"："+calendar.get(Calendar.MINUTE);
+        time=calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
     }
 
     @Override
     public void onBackPressed() {
+        if(!note_edittext.getText().toString().isEmpty()){
+            SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+            db.execSQL("insert into note (note_time,note_content) values(?,?)",new String[]{date+" "+time, note_edittext.getText().toString()});
+        }
         super.onBackPressed();
     }
 }

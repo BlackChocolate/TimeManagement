@@ -44,7 +44,7 @@
             android:layout_weight="33"
             android:textSize="@dimen/text_size_16"
             android:gravity="center"
-            android:text="取消"
+            android:text="返回"
             android:id="@+id/note_change_cancel"
             android:layout_marginRight="@dimen/content_padding"
             />
@@ -53,22 +53,23 @@
             android:layout_height="wrap_content"
             android:layout_weight="33"
             android:gravity="center"
-            android:id="@+id/note_change_delete"
+            android:id="@+id/note_change_send"
             android:textSize="@dimen/text_size_16"
-            android:textColor="@color/text_red"
+            android:textColor="@color/avoscloud_blue"
             android:layout_marginRight="@dimen/content_padding"
             android:layout_marginLeft="@dimen/content_padding"
-            android:text="删除"/>
+            android:text="传送"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="33"
             android:gravity="center"
-            android:id="@+id/note_change_confirm"
+            android:id="@+id/note_change_delete"
             android:textSize="@dimen/text_size_16"
-            android:textColor="@color/avoscloud_blue"
+            android:textColor="@color/text_red"
             android:layout_marginLeft="@dimen/content_padding"
-            android:text="完成"/>
+            android:text="删除"/>
+
     </LinearLayout>
 </LinearLayout>
 

@@ -12,6 +12,7 @@
     <dimen name="padding_20">20dp</dimen>
     <!--控件外间距-->
     <dimen name="widget_margin">15dp</dimen>
+    <dimen name="widget_margin_10">10dp</dimen>
     <dimen name="widget_margin_20">20dp</dimen>
 
     <!--主界面-->

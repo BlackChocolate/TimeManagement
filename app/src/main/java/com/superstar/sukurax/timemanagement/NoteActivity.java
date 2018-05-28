@@ -62,7 +62,10 @@ public class NoteActivity extends Activity {
                 break;
         }
 
+    }
 
+    @Override
+    protected void onResume() {
         setContentView(R.layout.note_main);
         listView = (ListView) findViewById(R.id.note_list);
         back_toolbar_pic=(ImageView)findViewById(R.id.back_toolbar_pic);
@@ -86,10 +89,7 @@ public class NoteActivity extends Activity {
                 startActivity(intent);
             }
         });
-    }
 
-    @Override
-    protected void onResume() {
         super.onResume();
         back_toolbar_text.setText("便签");
         switch (sp.getInt("skin_num", 1)){

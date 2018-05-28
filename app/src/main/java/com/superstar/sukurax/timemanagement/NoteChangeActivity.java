@@ -24,7 +24,7 @@ import static com.superstar.sukurax.timemanagement.MainActivity.datebaseHelper;
 
 public class NoteChangeActivity extends Activity{
     ImageView back_toolbar_pic;
-    TextView back_toolbar_text,note_change_cancel,note_change_delete,note_change_confirm;
+    TextView back_toolbar_text,note_change_cancel,note_change_delete,note_change_send;
     EditText note_edittext;
     String date,time;
     SharedPreferences sp;
@@ -108,21 +108,18 @@ public class NoteChangeActivity extends Activity{
             }
         });
 
-        note_change_confirm=(TextView)findViewById(R.id.note_change_confirm);
-        note_change_confirm.setOnClickListener(new View.OnClickListener() {
+        note_change_send=(TextView)findViewById(R.id.note_change_send);
+        note_change_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(note_edittext.getText().toString().isEmpty()){
                     Toast.makeText(NoteChangeActivity.this, "便签不能为空", Toast.LENGTH_SHORT).show();
                 }else {
-
-                    SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
-                    db.execSQL("UPDATE note SET note_content = ? WHERE _id = ? ",new String[]{note_edittext.getText().toString(),getIntent().getStringExtra("_id")});
-
-                    Intent intent =  new Intent(getApplication(),NoteActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "share");
+                    intent.putExtra(Intent.EXTRA_TEXT, note_edittext.getText().toString());
+                    startActivity(Intent.createChooser(intent, "share to"));
                 }
             }
         });
@@ -174,6 +171,12 @@ public class NoteChangeActivity extends Activity{
 
     @Override
     public void onBackPressed() {
+        if(note_edittext.getText().toString().isEmpty()){
+            Toast.makeText(NoteChangeActivity.this, "便签不能为空", Toast.LENGTH_SHORT).show();
+        }else {
+            SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+            db.execSQL("UPDATE note SET note_content = ? WHERE _id = ? ",new String[]{note_edittext.getText().toString(),getIntent().getStringExtra("_id")});
+        }
         super.onBackPressed();
     }
 }

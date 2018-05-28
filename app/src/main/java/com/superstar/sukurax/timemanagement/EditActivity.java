@@ -1,12 +1,15 @@
 package com.superstar.sukurax.timemanagement;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -34,6 +37,9 @@ public class EditActivity extends Activity{
     String date,time;
     SharedPreferences sp;
     Toolbar  back_toolbar;
+
+    AlarmManager alarmManager;
+    PendingIntent pendingIntent;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +108,8 @@ public class EditActivity extends Activity{
         edit_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setAlarmOne();
+
                 Integer type = 0;
                 if(edit_text.getText().toString().equals("")){
                     Toast.makeText(EditActivity.this,"任务未填写", Toast.LENGTH_SHORT).show();
@@ -224,5 +232,17 @@ public class EditActivity extends Activity{
         super.onBackPressed();
     }
 
+    public void alarm(){
 
+    }
+    public void setAlarmOne(){
+        Intent intent = new Intent(this, LongRunningService.class);
+
+        startService(intent);
+
+
+    }
+    public void cancelAlarmCycle(View view){
+        alarmManager.cancel(pendingIntent);
+    }
 }
