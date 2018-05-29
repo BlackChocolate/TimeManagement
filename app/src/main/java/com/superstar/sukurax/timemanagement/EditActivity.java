@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -24,7 +25,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class EditActivity extends Activity{
     ImageView back;
@@ -36,7 +40,7 @@ public class EditActivity extends Activity{
     RadioButton edit_radioBt1,edit_radioBt2,edit_radioBt3,edit_radioBt4;
     private Calendar cl;
     private int year,month,day,hour,minute;
-    String date,time;
+    String dateCalculation,timeCalculation;
     SharedPreferences sp;
     Toolbar back_toolbar;
     Switch remindSwitch;
@@ -101,13 +105,6 @@ public class EditActivity extends Activity{
         edit_radioBt3=(RadioButton)findViewById(R.id.edit_radioBt3);
         edit_radioBt4=(RadioButton)findViewById(R.id.edit_radioBt4);
 
-        cl= Calendar.getInstance();
-        year=cl.get(Calendar.YEAR);
-        month=cl.get(Calendar.MONTH)+1;
-        day=cl.get(Calendar.DAY_OF_MONTH);
-        hour=cl.get(Calendar.HOUR_OF_DAY);
-        minute=cl.get(Calendar.MINUTE);
-
 
         edit_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,14 +142,19 @@ public class EditActivity extends Activity{
                         temp="0";
                     }
                     SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
-                    db.execSQL("insert into task (content,type,time,state) values(?,?,?,?)",new String[]{edit_text.getText().toString(), type.toString(),date+" "+time,temp});
+                    db.execSQL("insert into task (content,type,time,state) values(?,?,?,?)",new String[]{edit_text.getText().toString(), type.toString(),dateCalculation+" "+timeCalculation,temp});
                     Cursor cursor = db.rawQuery("select last_insert_rowid() from task",null);
                     
                     int strid = 0;
                     if(cursor.moveToFirst()) {
                         strid = cursor.getInt(0);
                     }
-                    alarmSet(strid);
+                    if(remindSwitch.isChecked()){
+                        if(delayTimeCalculation()>0)
+                        {
+                            alarmSet(strid,Integer.parseInt(String.valueOf(delayTimeCalculation())));
+                        }
+                    }
 
                     Intent intent =  new Intent(getApplication(),MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -167,6 +169,15 @@ public class EditActivity extends Activity{
 
         });
 
+        cl= Calendar.getInstance();
+        year=cl.get(Calendar.YEAR);
+        month=cl.get(Calendar.MONTH)+1;
+        day=cl.get(Calendar.DAY_OF_MONTH);
+        hour=cl.get(Calendar.HOUR_OF_DAY);
+        minute=cl.get(Calendar.MINUTE);
+
+        dateCalculation=cl.get(Calendar.YEAR)+"-"+addZero(cl.get(Calendar.MONTH)+1)+"-"+addZero(cl.get(Calendar.DAY_OF_MONTH));
+        timeCalculation=addZero(cl.get(Calendar.HOUR_OF_DAY))+":"+addZero(cl.get(Calendar.MINUTE));
 
         edit_date.init(year, cl.get(Calendar.MONTH), day, new DatePicker.OnDateChangedListener() {
 
@@ -174,8 +185,8 @@ public class EditActivity extends Activity{
             public void onDateChanged(DatePicker view, int year, int monthOfYear,
                                       int dayOfMonth) {
                 // TODO Auto-generated method stub
-                setTitle(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
-                date=(year-2000)+"-"+(monthOfYear+1)+"-"+dayOfMonth;
+                setTitle(year+"-"+addZero(monthOfYear+1)+"-"+addZero(dayOfMonth));
+                dateCalculation=year+"-"+addZero(monthOfYear+1)+"-"+addZero(dayOfMonth);
             }
         });
         edit_time.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
@@ -183,30 +194,10 @@ public class EditActivity extends Activity{
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                 // TODO Auto-generated method stub
-                setTitle(hourOfDay+":"+minute);
-                time=hourOfDay+":"+minute;
+                setTitle(addZero(hourOfDay)+":"+addZero(minute));
+                timeCalculation=addZero(hourOfDay)+":"+addZero(minute);
             }
         });
-//弹出类型时间选择器
-//        new DatePickerDialog(this,new DatePickerDialog.OnDateSetListener() {
-//
-//            @Override
-//            public void onDateSet(DatePicker view, int year, int monthOfYear,
-//                                  int dayOfMonth) {
-//                // TODO Auto-generated method stub
-//                setTitle(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
-//            }
-//        }, year,cl.get(Calendar.MONTH), day).show();
-//
-//
-//        new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-//
-//            @Override
-//            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//                // TODO Auto-generated method stub
-//                setTitle(hourOfDay+":"+minute);
-//            }
-//        }, hour, minute, true).show();
 
     }
 
@@ -214,10 +205,6 @@ public class EditActivity extends Activity{
     protected void onResume() {
         super.onResume();
         back_text.setText("设置任务");
-
-        Calendar calendar = Calendar.getInstance();
-        date=(calendar.get(Calendar.YEAR)-2000)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
-        time=calendar.get(Calendar.HOUR_OF_DAY)+"："+calendar.get(Calendar.MINUTE);
 
         switch (sp.getInt("skin_num", 1)){
             case 1:
@@ -248,10 +235,44 @@ public class EditActivity extends Activity{
         super.onBackPressed();
     }
 
-    public void alarm(){
+    public static Long timeStrToSecond(String time) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Long second = format.parse(time).getTime();
+            return second;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        return -1l;
     }
-    public void alarmSet(Integer alarmId){
+    Long delayTimeCalculation() {
+        Long timeNow = new Date().getTime();
+        Long timeSetting = null;
+
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Log.d("time", dateCalculation + " " + timeCalculation + ":00");
+            timeSetting = format.parse(dateCalculation + " " + timeCalculation + ":00").getTime();
+            Log.d("time", timeSetting.toString() + "  timenow:" + timeNow);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return timeSetting-timeNow;
+    }
+
+    String addZero(Integer integer){
+        String str="";
+        if(integer<10){
+           str="0"+integer;
+        }else {
+            str=integer.toString();
+        }
+        return str;
+    }
+
+    
+    public void alarmSet(Integer alarmId,Integer delayTime){
         //获得系统提供的AlarmManager服务的对象
         AlarmManager alarm = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         //Intent设置要启动的组件，这里启动广播
@@ -263,7 +284,7 @@ public class EditActivity extends Activity{
         //PendingIntent对象设置动作,启动的是Activity还是Service,或广播!
         PendingIntent sender = PendingIntent.getBroadcast(getApplicationContext(), alarmId, myIntent, 0);
         //注册闹钟
-        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5 * 1000, sender);
+        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + delayTime, sender);
 
     }
     public void alarmCancel(Integer alarmId){

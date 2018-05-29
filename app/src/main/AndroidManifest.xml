@@ -66,8 +66,8 @@
         <!--闹钟接收广播-->
         <receiver android:name=".AlarmReceiver">
             <intent-filter>
-                <action android:name="com.e_eduspace.TIMER_ACTION_REPEATING" />
-                <action android:name="com.e_eduspace.TIMER_ACTION" />
+                <action android:name="com.superstar.sukurax.timemanagement.TIMER_ACTION_REPEATING" />
+                <action android:name="com.superstar.sukurax.timemanagement.TIMER_ACTION" />
             </intent-filter>
         </receiver>
 

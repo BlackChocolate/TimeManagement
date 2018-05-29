@@ -10,17 +10,20 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 public class AlarmReceiver extends BroadcastReceiver {
     private NotificationManager m_notificationMgr = null;
     private static final int NOTIFICATION_FLAG = 3;
     @Override
     public void onReceive(Context context, Intent intent) {
+
         m_notificationMgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (intent.getAction().equals(GlobalValues.TIMER_ACTION_REPEATING)) {
             Log.e("alarm_receiver", "周期闹钟");
         } else if (intent.getAction().equals(GlobalValues.TIMER_ACTION)) {
             Log.e("alarm_receiver", "定时闹钟");
+
             Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher_round);
             Intent intent1 = new Intent(context, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent1, 0);
