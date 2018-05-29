@@ -41,16 +41,16 @@
         </activity>
         <!-- 反馈组件 END -->
 
-        <activity android:name=".EditActivity"/>
+        <activity android:name=".EditActivity" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".RemindSettingActivity"/>
         <activity android:name=".NoteActivity"/>
-        <activity android:name=".NoteAddActivity"/>
-        <activity android:name=".NoteChangeActivity"/>
+        <activity android:name=".NoteAddActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".NoteChangeActivity" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".CurrentActivity"/>
         <activity android:name=".TaskHistoryActivity"/>
         <activity android:name=".CalendarActivity"/>
         <activity android:name=".SkinChangeActivity"/>
-        <activity android:name=".LoginActivity"/>
+        <activity android:name=".LoginActivity" android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".WelcomeActivity"
             android:theme="@style/AppWelcome">
@@ -61,9 +61,23 @@
         </activity>
 
         <activity android:name=".RingActivity"/>
+        <activity android:name=".ChangeTaskActivity"/>
 
-        <service android:name=".MyService"/>
-        <service android:name=".LongRunningService"/>
+        <!--闹钟接收广播-->
+        <receiver android:name=".AlarmReceiver">
+            <intent-filter>
+                <action android:name="com.e_eduspace.TIMER_ACTION_REPEATING" />
+                <action android:name="com.e_eduspace.TIMER_ACTION" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".WidgetProvider"> <meta-data android:name="android.appwidget.provider" android:resource="@layout/app_widget_provider_info" />
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.seewo.homewidgets.action.CLICK" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

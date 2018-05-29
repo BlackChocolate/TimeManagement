@@ -164,34 +164,38 @@ public class CurrentActivity extends Activity {
             undoneList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                    final AlertDialog.Builder normalDialog =
-                            new AlertDialog.Builder(CurrentActivity.this);
-                    normalDialog.setTitle("取消事项提醒");
-                    normalDialog.setMessage("改为已完成？");
-                    normalDialog.setPositiveButton("确定",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Map<String,Object> map = undoneData.get(i);
-                                    String _id = map.get("_id").toString();
+                    Map<String,Object> map = undoneData.get(i);
+                    String task_id = map.get("_id").toString();
 
-                                    SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
-                                    db.execSQL("UPDATE task SET state = ? WHERE _id = ? ",new String[]{"1",_id});
-
-                                    getData();
-                                    changeData();
-                                    onResume();
-                                }
-                            });
-                    normalDialog.setNegativeButton("取消",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //...To-do
-                                }
-                            });
-                    // 显示
-                    normalDialog.show();
+                    startActivity(new Intent(CurrentActivity.this,ChangeTaskActivity.class).putExtra("task_id",task_id));
+//                    final AlertDialog.Builder normalDialog =
+//                            new AlertDialog.Builder(CurrentActivity.this);
+//                    normalDialog.setTitle("取消事项提醒");
+//                    normalDialog.setMessage("改为已完成？");
+//                    normalDialog.setPositiveButton("确定",
+//                            new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    Map<String,Object> map = undoneData.get(i);
+//                                    String _id = map.get("_id").toString();
+//
+//                                    SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+//                                    db.execSQL("UPDATE task SET state = ? WHERE _id = ? ",new String[]{"0",_id});
+//
+//                                    getData();
+//                                    changeData();
+//                                    onResume();
+//                                }
+//                            });
+//                    normalDialog.setNegativeButton("取消",
+//                            new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    //...To-do
+//                                }
+//                            });
+//                    // 显示
+//                    normalDialog.show();
                 }
             });
 
@@ -200,34 +204,38 @@ public class CurrentActivity extends Activity {
             doneList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                    final AlertDialog.Builder normalDialog =
-                            new AlertDialog.Builder(CurrentActivity.this);
-                    normalDialog.setTitle("添加事项提醒");
-                    normalDialog.setMessage("改为执行中？");
-                    normalDialog.setPositiveButton("确定",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Map<String,Object> map = doneData.get(i);
-                                    String _id = map.get("_id").toString();
+                    Map<String,Object> map = undoneData.get(i);
+                    String task_id = map.get("_id").toString();
 
-                                    SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
-                                    db.execSQL("UPDATE task SET state = ? WHERE _id = ? ",new String[]{"0",_id});
-
-                                    getData();
-                                    changeData();
-                                    onResume();
-                                }
-                            });
-                    normalDialog.setNegativeButton("取消",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //...To-do
-                                }
-                            });
-                    // 显示
-                    normalDialog.show();
+                    startActivity(new Intent(CurrentActivity.this,ChangeTaskActivity.class).putExtra("task_id",task_id));
+//                    final AlertDialog.Builder normalDialog =
+//                            new AlertDialog.Builder(CurrentActivity.this);
+//                    normalDialog.setTitle("添加事项提醒");
+//                    normalDialog.setMessage("改为执行中？");
+//                    normalDialog.setPositiveButton("确定",
+//                            new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    Map<String,Object> map = doneData.get(i);
+//                                    String _id = map.get("_id").toString();
+//
+//                                    SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+//                                    db.execSQL("UPDATE task SET state = ? WHERE _id = ? ",new String[]{"1",_id});
+//
+//                                    getData();
+//                                    changeData();
+//                                    onResume();
+//                                }
+//                            });
+//                    normalDialog.setNegativeButton("取消",
+//                            new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    //...To-do
+//                                }
+//                            });
+//                    // 显示
+//                    normalDialog.show();
                 }
             });
         }

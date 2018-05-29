@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/grey">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="-17dp">
+
+        <!--???为什么会有个17dp的偏移-->
+
+        <include
+            layout="@layout/back_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/login"
@@ -20,59 +29,32 @@
         android:background="@color/white">
 
 
-
-
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/login_bg"
             />
 
-
-        <TextView
-            android:text="账号"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginTop="60dp"
-            />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:textSize="24sp"
-            android:ems="10"
-            android:id="@+id/loginUsername" />
-
-        <TextView
-            android:text="密码"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginTop="8dp"
-            />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:textSize="24sp"
-            android:ems="10"
-            android:id="@+id/loginPassword" />
-
         <Button
-            android:text="登录/注册"
+            android:text="备份到云端"      android:layout_marginTop="28dp"
+            android:background="@color/avoscloud_blue"
+            android:textColor="@color/avoscloud_feedback_white"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/syncUp"
+            />
+        <Button
+            android:text="同步到本地"
             android:layout_marginTop="28dp"
             android:background="@color/avoscloud_blue"
             android:textColor="@color/avoscloud_feedback_white"
             android:textSize="20sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/loginBtn"
+            android:id="@+id/syncDown"
             />
+
 
     </LinearLayout>
 

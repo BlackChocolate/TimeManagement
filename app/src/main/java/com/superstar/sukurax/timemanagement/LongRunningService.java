@@ -51,18 +51,18 @@ public class LongRunningService extends Service {
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
 
 
-        android.support.v4.app.NotificationCompat.Builder builder = new android.support.v4.app.NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("我是伴有铃声效果的通知")
-                .setContentText("美妙么?安静听~")
-                //调用系统默认响铃,设置此属性后setSound()会无效
-                .setDefaults(Notification.DEFAULT_SOUND)
-        Notification notification = builder.build();
-        //设置 Notification 的 flags = FLAG_NO_CLEAR
-        //FLAG_AUTO_CANCEL 表示该通知能被状态栏的清除按钮给清除掉
-        //等价于 builder.setAutoCancel(true);
-        notification.flags |= Notification.FLAG_NO_CLEAR;
-        manager.notify(2, notification);
+//        android.support.v4.app.NotificationCompat.Builder builder = new android.support.v4.app.NotificationCompat.Builder(this)
+//                .setSmallIcon(R.mipmap.ic_launcher)
+//                .setContentTitle("我是伴有铃声效果的通知")
+//                .setContentText("美妙么?安静听~")
+//                //调用系统默认响铃,设置此属性后setSound()会无效
+//                .setDefaults(Notification.DEFAULT_SOUND)
+//        Notification notification = builder.build();
+//        //设置 Notification 的 flags = FLAG_NO_CLEAR
+//        //FLAG_AUTO_CANCEL 表示该通知能被状态栏的清除按钮给清除掉
+//        //等价于 builder.setAutoCancel(true);
+//        notification.flags |= Notification.FLAG_NO_CLEAR;
+//        manager.notify(2, notification);
 
         return super.onStartCommand(intent, flags, startId);
 

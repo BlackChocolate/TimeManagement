@@ -114,8 +114,6 @@
             </TimePicker>
 
         </LinearLayout>
-
-        <LinearLayout style="@style/common_horizontal_division_line_style" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,12 +128,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="@dimen/text_size_16"
                 android:checked="true"
+                android:textSize="@dimen/text_size_16"
                 android:text="提醒" />
 
         </LinearLayout>
-        <LinearLayout style="@style/common_horizontal_division_line_style" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -155,9 +153,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="50"
-                android:text="新建"
-                android:id="@+id/edit_confirm"
-                android:background="@drawable/button_shape_right"
+                android:text="更新"
+                android:id="@+id/edit_update"
+                android:background="@drawable/button_shape_right_blue"
                 android:layout_marginLeft="0.5dp"/>
         </LinearLayout>
 

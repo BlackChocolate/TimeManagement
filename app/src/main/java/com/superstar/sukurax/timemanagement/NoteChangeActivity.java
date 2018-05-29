@@ -119,7 +119,7 @@ public class NoteChangeActivity extends Activity{
                     intent.setType("text/plain");
                     intent.putExtra(Intent.EXTRA_SUBJECT, "share");
                     intent.putExtra(Intent.EXTRA_TEXT, note_edittext.getText().toString());
-                    startActivity(Intent.createChooser(intent, "share to"));
+                    startActivity(Intent.createChooser(intent, "分享"));
                 }
             }
         });

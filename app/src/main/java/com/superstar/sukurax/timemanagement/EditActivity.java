@@ -8,6 +8,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -36,8 +38,8 @@ public class EditActivity extends Activity{
     private int year,month,day,hour,minute;
     String date,time;
     SharedPreferences sp;
-    Toolbar  back_toolbar;
-
+    Toolbar back_toolbar;
+    Switch remindSwitch;
     AlarmManager alarmManager;
     PendingIntent pendingIntent;
     @Override
@@ -68,6 +70,8 @@ public class EditActivity extends Activity{
         }
 
         setContentView(R.layout.edit_task);
+
+        remindSwitch = (Switch) findViewById(R.id.remind_switch);
 
         back=(ImageView)findViewById(R.id.back_toolbar_pic);
         back_text=(TextView)findViewById(R.id.back_toolbar_text);
@@ -108,8 +112,6 @@ public class EditActivity extends Activity{
         edit_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setAlarmOne();
-
                 Integer type = 0;
                 if(edit_text.getText().toString().equals("")){
                     Toast.makeText(EditActivity.this,"任务未填写", Toast.LENGTH_SHORT).show();
@@ -135,8 +137,22 @@ public class EditActivity extends Activity{
                             Toast.makeText(EditActivity.this, "类型错误", Toast.LENGTH_SHORT).show();
                             break;
                     }
+                    //0代表不提醒，1代表提醒
+                    String temp="1";
+                    if(remindSwitch.isChecked()){
+                        temp="1";
+                    }else if(!remindSwitch.isChecked()){
+                        temp="0";
+                    }
                     SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
-                    db.execSQL("insert into task (content,type,time,state) values(?,?,?,?)",new String[]{edit_text.getText().toString(), type.toString(),date+" "+time,"0"});
+                    db.execSQL("insert into task (content,type,time,state) values(?,?,?,?)",new String[]{edit_text.getText().toString(), type.toString(),date+" "+time,temp});
+                    Cursor cursor = db.rawQuery("select last_insert_rowid() from task",null);
+                    
+                    int strid = 0;
+                    if(cursor.moveToFirst()) {
+                        strid = cursor.getInt(0);
+                    }
+                    alarmSet(strid);
 
                     Intent intent =  new Intent(getApplication(),MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -235,14 +251,28 @@ public class EditActivity extends Activity{
     public void alarm(){
 
     }
-    public void setAlarmOne(){
-        Intent intent = new Intent(this, LongRunningService.class);
+    public void alarmSet(Integer alarmId){
+        //获得系统提供的AlarmManager服务的对象
+        AlarmManager alarm = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        //Intent设置要启动的组件，这里启动广播
+        Intent myIntent = new Intent();
+        myIntent.setAction(GlobalValues.TIMER_ACTION);
 
-        startService(intent);
+        //获取新建任务的alarmId
 
+        //PendingIntent对象设置动作,启动的是Activity还是Service,或广播!
+        PendingIntent sender = PendingIntent.getBroadcast(getApplicationContext(), alarmId, myIntent, 0);
+        //注册闹钟
+        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5 * 1000, sender);
 
     }
-    public void cancelAlarmCycle(View view){
-        alarmManager.cancel(pendingIntent);
+    public void alarmCancel(Integer alarmId){
+        Intent myIntent = new Intent();
+        myIntent.setAction(GlobalValues.TIMER_ACTION);
+
+        //应获取点击的alarm_id
+        PendingIntent sender = PendingIntent.getBroadcast(getApplicationContext(), alarmId, myIntent,0);
+        AlarmManager alarm = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarm.cancel(sender);
     }
 }
