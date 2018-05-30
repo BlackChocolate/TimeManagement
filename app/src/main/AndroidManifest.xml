@@ -60,9 +60,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".RingActivity"/>
         <activity android:name=".ChangeTaskActivity"/>
-
+        <activity android:name=".TaskActivity"/>
         <!--闹钟接收广播-->
         <receiver android:name=".AlarmReceiver">
             <intent-filter>

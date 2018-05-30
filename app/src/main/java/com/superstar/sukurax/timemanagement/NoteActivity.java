@@ -151,7 +151,6 @@ public class NoteActivity extends Activity {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Map<String,Object> map = data.get(i);
                     String _id = map.get("_id").toString();
-
                     Intent intent =  new Intent(getApplication(),NoteChangeActivity.class);
                     intent.putExtra("_id",_id);
                     startActivity(intent);

@@ -19,7 +19,7 @@
             android:id="@+id/note_id"
             android:visibility="gone"/>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="@dimen/padding_15"

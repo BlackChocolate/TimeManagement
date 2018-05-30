@@ -30,6 +30,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
+
 public class EditActivity extends Activity{
     ImageView back;
     TextView back_text,edit_text;
@@ -38,8 +40,6 @@ public class EditActivity extends Activity{
     TimePicker edit_time;
     Button edit_cancel,edit_confirm;
     RadioButton edit_radioBt1,edit_radioBt2,edit_radioBt3,edit_radioBt4;
-    private Calendar cl;
-    private int year,month,day,hour,minute;
     String dateCalculation,timeCalculation;
     SharedPreferences sp;
     Toolbar back_toolbar;
@@ -142,7 +142,7 @@ public class EditActivity extends Activity{
                         temp="0";
                     }
                     SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
-                    db.execSQL("insert into task (content,type,time,state) values(?,?,?,?)",new String[]{edit_text.getText().toString(), type.toString(),dateCalculation+" "+timeCalculation,temp});
+                    db.execSQL("insert into task (content,type,time,state) values(?,?,?,?)",new String[]{edit_text.getText().toString().trim(), type.toString(),dateCalculation+" "+timeCalculation,temp});
                     Cursor cursor = db.rawQuery("select last_insert_rowid() from task",null);
                     
                     int strid = 0;
@@ -152,8 +152,12 @@ public class EditActivity extends Activity{
                     if(remindSwitch.isChecked()){
                         if(delayTimeCalculation()>0)
                         {
-                            alarmSet(strid,Integer.parseInt(String.valueOf(delayTimeCalculation())));
+                            alarmSet(strid,edit_text.getText().toString().trim(),Integer.parseInt(String.valueOf(delayTimeCalculation())));
+                        }else {
+                            Toast.makeText(EditActivity.this, "设定时间已过，该任务将不进行提醒", Toast.LENGTH_SHORT).show();
                         }
+                    }else {
+                        Toast.makeText(EditActivity.this, "未设置提醒任务", Toast.LENGTH_SHORT).show();
                     }
 
                     Intent intent =  new Intent(getApplication(),MainActivity.class);
@@ -169,14 +173,14 @@ public class EditActivity extends Activity{
 
         });
 
-        cl= Calendar.getInstance();
-        year=cl.get(Calendar.YEAR);
-        month=cl.get(Calendar.MONTH)+1;
-        day=cl.get(Calendar.DAY_OF_MONTH);
-        hour=cl.get(Calendar.HOUR_OF_DAY);
-        minute=cl.get(Calendar.MINUTE);
+        Calendar cl = Calendar.getInstance();
+        int year = cl.get(Calendar.YEAR);
+        int month = cl.get(Calendar.MONTH) + 1;
+        int day = cl.get(Calendar.DAY_OF_MONTH);
+        int hour = cl.get(Calendar.HOUR_OF_DAY);
+        int minute = cl.get(Calendar.MINUTE);
 
-        dateCalculation=cl.get(Calendar.YEAR)+"-"+addZero(cl.get(Calendar.MONTH)+1)+"-"+addZero(cl.get(Calendar.DAY_OF_MONTH));
+        dateCalculation= cl.get(Calendar.YEAR)+"-"+addZero(cl.get(Calendar.MONTH)+1)+"-"+addZero(cl.get(Calendar.DAY_OF_MONTH));
         timeCalculation=addZero(cl.get(Calendar.HOUR_OF_DAY))+":"+addZero(cl.get(Calendar.MINUTE));
 
         edit_date.init(year, cl.get(Calendar.MONTH), day, new DatePicker.OnDateChangedListener() {
@@ -235,17 +239,6 @@ public class EditActivity extends Activity{
         super.onBackPressed();
     }
 
-    public static Long timeStrToSecond(String time) {
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Long second = format.parse(time).getTime();
-            return second;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return -1l;
-    }
     Long delayTimeCalculation() {
         Long timeNow = new Date().getTime();
         Long timeSetting = null;
@@ -272,7 +265,7 @@ public class EditActivity extends Activity{
     }
 
     
-    public void alarmSet(Integer alarmId,Integer delayTime){
+    public void alarmSet(Integer alarmId, String alarmContent, Integer delayTime){
         //获得系统提供的AlarmManager服务的对象
         AlarmManager alarm = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         //Intent设置要启动的组件，这里启动广播
@@ -280,20 +273,14 @@ public class EditActivity extends Activity{
         myIntent.setAction(GlobalValues.TIMER_ACTION);
 
         //获取新建任务的alarmId
-
+        myIntent.putExtra("alarmContent",alarmContent);
+        myIntent.putExtra("alarmId",alarmId);
         //PendingIntent对象设置动作,启动的是Activity还是Service,或广播!
-        PendingIntent sender = PendingIntent.getBroadcast(getApplicationContext(), alarmId, myIntent, 0);
+        //更新内容
+        PendingIntent sender = PendingIntent.getBroadcast(getApplicationContext(), alarmId, myIntent, FLAG_UPDATE_CURRENT);
         //注册闹钟
         alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + delayTime, sender);
 
     }
-    public void alarmCancel(Integer alarmId){
-        Intent myIntent = new Intent();
-        myIntent.setAction(GlobalValues.TIMER_ACTION);
 
-        //应获取点击的alarm_id
-        PendingIntent sender = PendingIntent.getBroadcast(getApplicationContext(), alarmId, myIntent,0);
-        AlarmManager alarm = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        alarm.cancel(sender);
-    }
 }

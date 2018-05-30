@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -19,42 +20,53 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-        <EditText
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/padding_20"
-            android:gravity="top"
-            android:id="@+id/note_edittext"
-            android:textSize="@dimen/text_size_20"
-            android:hint="输入你想记录的内容"/>
+            android:layout_marginLeft="@dimen/widget_margin_20"
+            android:layout_marginRight="@dimen/widget_margin_20"
+            android:layout_marginTop="@dimen/widget_margin_20"
+            app:cardCornerRadius="10dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/padding_20"
+                android:id="@+id/taskContent"
+                />
+        </android.support.v7.widget.CardView>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/widget_margin"
+        android:layout_margin="@dimen/widget_margin_10"
         android:weightSum="100">
-        <TextView
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="50"
+            android:background="@color/white"
             android:textSize="@dimen/text_size_18"
+            android:textColor="@color/cardview_dark_background"
             android:gravity="center"
-            android:text="取消"
-            android:id="@+id/note_add_cancel"
-            android:layout_marginRight="@dimen/content_padding"
+            android:text="确认收到"
+            android:id="@+id/task_confirm"
+            android:layout_marginRight="@dimen/widget_margin_5"
             />
-        <TextView
+
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="50"
+            android:background="@drawable/button_shape_right_blue"
             android:gravity="center"
-            android:id="@+id/note_add_confirm"
+            android:id="@+id/task_delay"
             android:textSize="@dimen/text_size_18"
             android:textColor="@color/avoscloud_blue"
-            android:layout_marginLeft="@dimen/content_padding"
-            android:text="完成"/>
+            android:layout_marginLeft="@dimen/widget_margin_5"
+            android:text="延迟提醒"/>
     </LinearLayout>
 </LinearLayout>
 

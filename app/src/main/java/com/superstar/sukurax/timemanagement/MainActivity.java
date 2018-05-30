@@ -255,7 +255,6 @@ public class MainActivity extends Activity
             String currentUsername = AVUser.getCurrentUser().getUsername();
             userName.setText(currentUsername);
             userEmail.setText("当前用户懒的写~");
-
         }
 
         //获取系统的日期,设置标题
