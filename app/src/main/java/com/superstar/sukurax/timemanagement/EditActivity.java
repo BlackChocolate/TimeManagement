@@ -134,7 +134,8 @@ public class EditActivity extends Activity{
                             Toast.makeText(EditActivity.this, "类型错误", Toast.LENGTH_SHORT).show();
                             break;
                     }
-                    //0代表不提醒，1代表提醒
+                    Log.d("test","新任务type:"+type);
+                    //0代表不提醒或已提醒，1代表提醒
                     String temp="1";
                     if(remindSwitch.isChecked()){
                         temp="1";
@@ -149,15 +150,17 @@ public class EditActivity extends Activity{
                     if(cursor.moveToFirst()) {
                         strid = cursor.getInt(0);
                     }
+                    Log.d("test","新任务id:"+strid);
                     if(remindSwitch.isChecked()){
                         if(delayTimeCalculation()>0)
                         {
                             alarmSet(strid,edit_text.getText().toString().trim(),Integer.parseInt(String.valueOf(delayTimeCalculation())));
+                            Toast.makeText(EditActivity.this, "提醒任务已设定", Toast.LENGTH_SHORT).show();
                         }else {
                             Toast.makeText(EditActivity.this, "设定时间已过，该任务将不进行提醒", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
-                        Toast.makeText(EditActivity.this, "未设置提醒任务", Toast.LENGTH_SHORT).show();
+                    }else if(!remindSwitch.isChecked()){
+                        Toast.makeText(EditActivity.this, "未设置任务提醒", Toast.LENGTH_SHORT).show();
                     }
 
                     Intent intent =  new Intent(getApplication(),MainActivity.class);

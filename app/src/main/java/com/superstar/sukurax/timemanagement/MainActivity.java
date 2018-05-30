@@ -200,7 +200,7 @@ public class MainActivity extends Activity
         });
     }
 
-    private  void setNotification() {
+    private  void setNotification(Integer integer) {
         //设置一个Intent,不然点击通知不会自动消失
         Intent resultIntent = new Intent(this, CurrentActivity.class);
         resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -209,14 +209,14 @@ public class MainActivity extends Activity
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.notification_pic)
                 .setContentTitle("明日计划通")
-                .setContentText("执行中任务:"+undoneTask)
+                .setContentText("执行中任务:"+integer)
                 .setContentIntent(resultPendingIntent);
         Notification notification = builder.build();
         //设置 Notification 的 flags = FLAG_NO_CLEAR
         //FLAG_AUTO_CANCEL 表示该通知能被状态栏的清除按钮给清除掉
         //等价于 builder.setAutoCancel(true);
         notification.flags |= Notification.FLAG_NO_CLEAR;
-        mNotificationManager.notify(DEFAULT_NOTIFICATION_ID, notification);
+        mNotificationManager.notify(0, notification);
     }
 
     public void setThemeColor(){
@@ -312,7 +312,7 @@ public class MainActivity extends Activity
                         Toast.makeText(MainActivity.this, "获取星期错误", Toast.LENGTH_SHORT).show();
                         break;
                 }
-                if(cursor.getString(cursor.getColumnIndex("state")).equals("0")){
+                if(cursor.getString(cursor.getColumnIndex("state")).equals("1")){
                     undoneTask+=1;
                 }
 
@@ -323,7 +323,7 @@ public class MainActivity extends Activity
         task_text3.setText(value3);
         task_text4.setText(value4);
 
-        setNotification();
+        setNotification(undoneTask);
     }
 
     @Override

@@ -113,9 +113,9 @@ public class TaskHistoryActivity extends Activity {
                 item.put("_id", cursor.getString(cursor.getColumnIndex("_id")));
                 item.put("time", cursor.getString(cursor.getColumnIndex("time")));
                 item.put("content", cursor.getString(cursor.getColumnIndex("content")));
-                if(cursor.getString(cursor.getColumnIndex("state")).equals("0")){
+                if(cursor.getString(cursor.getColumnIndex("state")).equals("1")){
                     item.put("state", "未完成");
-                }else if(cursor.getString(cursor.getColumnIndex("state")).equals("1")){
+                }else if(cursor.getString(cursor.getColumnIndex("state")).equals("0")){
                     item.put("state", "已完成");
                 }
 

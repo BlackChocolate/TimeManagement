@@ -94,7 +94,7 @@ public class CurrentActivity extends Activity {
                 item.put("_id", cursor.getString(cursor.getColumnIndex("_id")));
                 item.put("time", cursor.getString(cursor.getColumnIndex("time")));
                 item.put("content", cursor.getString(cursor.getColumnIndex("content")));
-                if(cursor.getString(cursor.getColumnIndex("state")).equals("0")){
+                if(cursor.getString(cursor.getColumnIndex("state")).equals("1")){
                     undoneData.add(item);
                 }else {
                     doneData.add(item);

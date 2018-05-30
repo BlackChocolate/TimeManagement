@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -44,6 +45,7 @@ public class ChangeTaskActivity extends Activity {
     AlarmManager alarmManager;
     PendingIntent pendingIntent;
 
+    String task_id;
     String content,type,time,state,task_date,task_time;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,6 @@ public class ChangeTaskActivity extends Activity {
             default:
                 break;
         }
-
         setContentView(R.layout.change_task);
 
         back=(ImageView)findViewById(R.id.back_toolbar_pic);
@@ -131,20 +132,16 @@ public class ChangeTaskActivity extends Activity {
                 break;
         }
 
-        final String task_id=getIntent().getStringExtra("task_id");
+        task_id=getIntent().getStringExtra("task_id");
+        Log.d("test","修改task_id:"+task_id);
         Cursor cursor=datebaseHelper.getReadableDatabase().rawQuery(
-                "select * from task ",new String[]{}
+                "select * from task where _id=?",new String[]{task_id+""}
         );
-
         if (cursor.moveToFirst()) {
-            do{
-                if(cursor.getString(cursor.getColumnIndex("_id")).equals(task_id)){
-                    content=cursor.getString(cursor.getColumnIndex("content"));
-                    type=cursor.getString(cursor.getColumnIndex("type"));
-                    time=cursor.getString(cursor.getColumnIndex("time"));
-                    state=cursor.getString(cursor.getColumnIndex("state"));
-                }
-            }while (cursor.moveToNext());
+            content=cursor.getString(cursor.getColumnIndex("content"));
+            type=cursor.getString(cursor.getColumnIndex("type"));
+            time=cursor.getString(cursor.getColumnIndex("time"));
+            state=cursor.getString(cursor.getColumnIndex("state"));
         }
         edit_text.setText(content);
         switch (type){
@@ -168,6 +165,7 @@ public class ChangeTaskActivity extends Activity {
         day=Integer.parseInt(time.split(" ")[0].split("-")[1]);
         hour=Integer.parseInt(time.split(" ")[1].split(":")[0]);
         minute=Integer.parseInt(time.split(" ")[1].split(":")[1]);
+
         edit_date.init(year, month, day, new DatePicker.OnDateChangedListener() {
 
             @Override

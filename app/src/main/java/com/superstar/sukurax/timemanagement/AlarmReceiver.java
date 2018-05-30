@@ -12,6 +12,8 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
+
 public class AlarmReceiver extends BroadcastReceiver {
     private NotificationManager m_notificationMgr = null;
     private static final int NOTIFICATION_FLAG = 3;
@@ -20,14 +22,15 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         m_notificationMgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (intent.getAction().equals(GlobalValues.TIMER_ACTION_REPEATING)) {
-            Log.e("alarm_receiver", "周期闹钟");
+            Log.d("test", "周期闹钟");
         } else if (intent.getAction().equals(GlobalValues.TIMER_ACTION)) {
-            Log.e("alarm_receiver", "定时闹钟");
             alarmId=intent.getIntExtra("alarmId",0);
+            Log.d("test", "广播id"+alarmId);
             Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher_round);
             Intent intent1 = new Intent(context, TaskActivity.class);
             intent1.putExtra("alarmId",alarmId);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent1, 0);
+            intent1.putExtra("alarmContent",intent.getStringExtra("alarmContent"));
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, alarmId, intent1, FLAG_UPDATE_CURRENT);
             Notification notify = new Notification.Builder(context)
                     .setSmallIcon(R.mipmap.ic_launcher_round) // 设置状态栏中的小图片，尺寸一般建议在24×24
                     .setLargeIcon(bitmap) // 这里也可以设置大图标
@@ -43,7 +46,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             //使用默认的震动
             notify.defaults |= Notification.DEFAULT_VIBRATE;
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            manager.notify(NOTIFICATION_FLAG, notify);
+            manager.notify(alarmId, notify);
             bitmap.recycle(); //回收bitmap
         }
     }

@@ -66,7 +66,7 @@
             android:textSize="@dimen/text_size_18"
             android:textColor="@color/avoscloud_blue"
             android:layout_marginLeft="@dimen/widget_margin_5"
-            android:text="延迟提醒"/>
+            android:text="延迟5分提醒"/>
     </LinearLayout>
 </LinearLayout>
 
