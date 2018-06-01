@@ -44,13 +44,13 @@ public class LoginActivity extends Activity {
         if(AVUser.getCurrentUser()!=null){
             AlertDialog.Builder normalDialog =
                     new AlertDialog.Builder(LoginActivity.this);
-            normalDialog.setTitle("监测到您已登录");
+            normalDialog.setTitle("检测到您已登录");
             normalDialog.setMessage("注销登录？");
             normalDialog.setPositiveButton("确定",
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            AVUser.getCurrentUser().logOut();
                         }
                     });
             normalDialog.setNegativeButton("取消",
@@ -68,9 +68,6 @@ public class LoginActivity extends Activity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AVUser.getCurrentUser().logOut();
-
-
                 if(loginUsername.getText().toString().isEmpty()||loginPassword.getText().toString().isEmpty()){
                     Toast.makeText(LoginActivity.this, "不能为空!", Toast.LENGTH_SHORT).show();
                 }else{

@@ -386,8 +386,8 @@ public class MainActivity extends Activity
             Intent intent =  new Intent(getApplication(),SkinChangeActivity.class);
             startActivity(intent);
         }else if (id == R.id.setting7) {
-//            Intent intent =  new Intent(getApplication(),RemindSettingActivity.class);
-//            startActivity(intent);
+            Intent intent =  new Intent(getApplication(),SyncActivity.class);
+            startActivity(intent);
         } else if (id == R.id.setting8) {
             Intent intent =  new Intent(getApplication(),LoginActivity.class);
             startActivity(intent);

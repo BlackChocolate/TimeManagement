@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/grey">
+    android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -18,22 +19,40 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingTop="@dimen/padding_20"
+        android:paddingLeft="@dimen/padding_25"
+        android:paddingRight="@dimen/padding_25"
+        android:layout_weight="1">
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_margin="@dimen/widget_margin_10"
+            app:cardCornerRadius="10dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/text_size_14"
+                android:id="@+id/syncInfo"
+                android:padding="10dp"
+                android:textColor="@color/cardview_dark_background"
+                android:text="点击开始同步"/>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/login"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="@dimen/padding_25"
         android:paddingRight="@dimen/padding_25"
-        android:paddingTop="@dimen/padding_25"
         android:paddingBottom="@dimen/padding_25"
-        android:background="@color/white">
-
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/login_bg"
-            />
+        >
 
         <Button
             android:text="备份到云端"      android:layout_marginTop="28dp"
@@ -54,11 +73,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/syncDown"
             />
-
-
     </LinearLayout>
-
-
 
 </LinearLayout>
 

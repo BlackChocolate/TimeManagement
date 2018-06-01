@@ -12,67 +12,67 @@
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical"
+        android:paddingBottom="@dimen/padding_25"
         android:paddingLeft="@dimen/padding_25"
         android:paddingRight="@dimen/padding_25"
-        android:paddingTop="@dimen/padding_25"
-        android:paddingBottom="@dimen/padding_25"
-        android:background="@color/white">
-
-
+        android:paddingTop="@dimen/padding_25">
 
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/login_bg"
-            />
+            android:src="@drawable/login_bg" />
 
 
         <TextView
-            android:text="账号"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
             android:layout_marginTop="60dp"
-            />
+            android:text="账号"
+            android:textSize="18sp" />
 
         <EditText
+            android:id="@+id/loginUsername"
             android:layout_width="match_parent"
-            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:textSize="24sp"
+            android:layout_gravity="center_vertical"
             android:ems="10"
-            android:id="@+id/loginUsername" />
+            android:hint="请输入账号"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:inputType="textPersonName"
+            android:textSize="18sp" />
 
         <TextView
-            android:text="密码"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
             android:layout_marginTop="8dp"
-            />
+            android:text="密码"
+            android:textSize="18sp" />
 
         <EditText
+            android:id="@+id/loginPassword"
             android:layout_width="match_parent"
-            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:textSize="24sp"
+            android:layout_gravity="center_vertical"
             android:ems="10"
-            android:id="@+id/loginPassword" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            android:textSize="18sp" />
 
         <Button
-            android:text="登录/注册"
-            android:layout_marginTop="28dp"
-            android:background="@color/avoscloud_blue"
-            android:textColor="@color/avoscloud_feedback_white"
-            android:textSize="20sp"
+            android:id="@+id/loginBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/loginBtn"
-            />
+            android:layout_marginTop="28dp"
+            android:background="@color/avoscloud_blue"
+            android:text="登录/注册"
+            android:textColor="@color/avoscloud_feedback_white"
+            android:textSize="20sp" />
 
     </LinearLayout>
 

@@ -25,7 +25,9 @@
             android:padding="@dimen/padding_20"
             android:gravity="top"
             android:id="@+id/note_edittext"
-            android:textSize="@dimen/text_size_20"
+            android:textSize="@dimen/text_size_18"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:hint="输入你想记录的内容"/>
 
     </LinearLayout>

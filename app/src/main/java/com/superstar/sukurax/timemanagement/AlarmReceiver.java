@@ -35,8 +35,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .setSmallIcon(R.mipmap.ic_launcher_round) // 设置状态栏中的小图片，尺寸一般建议在24×24
                     .setLargeIcon(bitmap) // 这里也可以设置大图标
                     .setTicker("您有一个新的提醒事件") // 设置显示的提示文字
-                    .setContentTitle("正在提醒") // 设置显示的标题
-                    .setContentText(intent.getStringExtra("alarmContent")) // 消息的详细内容
+                    .setContentTitle("任务提醒中") // 设置显示的标题
+                    .setContentText("任务内容："+intent.getStringExtra("alarmContent")) // 消息的详细内容
                     .setContentIntent(pendingIntent) // 关联PendingIntent
                     .setNumber(1) // 在TextView的右方显示的数字，可以在外部定义一个变量，点击累加setNumber(count),这时显示的和
                     .getNotification(); // 需要注意build()是在API level16及之后增加的，在API11中可以使用getNotificatin()来

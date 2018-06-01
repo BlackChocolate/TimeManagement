@@ -30,14 +30,14 @@
             android:paddingRight="@dimen/widget_margin_20"
             android:paddingTop="16dp"
             android:background="#82abba"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             >
 
             <EditText
                 android:id="@+id/edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:hint="输入待办任务" />
         </LinearLayout>
 

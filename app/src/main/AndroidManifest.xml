@@ -60,8 +60,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ChangeTaskActivity"/>
-        <activity android:name=".TaskActivity"/>
+        <activity android:name=".ChangeTaskActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".TaskActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".SyncActivity" android:windowSoftInputMode="adjustResize"/>
         <!--闹钟接收广播-->
         <receiver android:name=".AlarmReceiver">
             <intent-filter>

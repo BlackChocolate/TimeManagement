@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:layout_margin="@dimen/widget_margin_10"
-        android:background="@color/urgent3"
         app:cardCornerRadius="10dp"
         >
         <TextView
