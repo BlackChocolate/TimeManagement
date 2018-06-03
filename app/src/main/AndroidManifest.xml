@@ -50,7 +50,7 @@
         <activity android:name=".TaskHistoryActivity"/>
         <activity android:name=".CalendarActivity"/>
         <activity android:name=".SkinChangeActivity"/>
-        <activity android:name=".LoginActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".LoginActivity" android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".WelcomeActivity"
             android:theme="@style/AppWelcome">

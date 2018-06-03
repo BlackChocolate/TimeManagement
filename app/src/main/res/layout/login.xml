@@ -40,10 +40,8 @@
             android:layout_gravity="center_vertical"
             android:ems="10"
             android:hint="请输入账号"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:inputType="textPersonName"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -58,11 +56,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:ems="10"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:hint="请输入密码"
             android:inputType="textPassword"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/loginBtn"
@@ -71,6 +67,8 @@
             android:layout_marginTop="28dp"
             android:background="@color/avoscloud_blue"
             android:text="登录/注册"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:textColor="@color/avoscloud_feedback_white"
             android:textSize="20sp" />
 

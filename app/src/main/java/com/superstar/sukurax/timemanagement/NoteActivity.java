@@ -126,10 +126,13 @@ public class NoteActivity extends Activity {
         if (cursor.moveToFirst()) {
             do{
                 Map<String, Object> item = new HashMap<String, Object>();
-                item.put("_id", cursor.getString(cursor.getColumnIndex("_id")));
-                item.put("note_time", cursor.getString(cursor.getColumnIndex("note_time")));
-                item.put("note_content", cursor.getString(cursor.getColumnIndex("note_content")));
-                data.add(item);
+                if(!cursor.getString(cursor.getColumnIndex("syncState")).equals("7")){
+                    item.put("_id", cursor.getString(cursor.getColumnIndex("_id")));
+                    item.put("note_time", cursor.getString(cursor.getColumnIndex("note_time")));
+                    item.put("note_content", cursor.getString(cursor.getColumnIndex("note_content")));
+                    data.add(item);
+                }
+
 
             }while (cursor.moveToNext());
         }

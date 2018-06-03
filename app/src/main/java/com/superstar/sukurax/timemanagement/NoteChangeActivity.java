@@ -87,13 +87,30 @@ public class NoteChangeActivity extends Activity{
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
-                                db.execSQL("DELETE FROM note WHERE _id = ? ",new String[]{getIntent().getStringExtra("_id")});
+                                //加载SQLite数据库
+                                Cursor cursor=datebaseHelper.getReadableDatabase().rawQuery(
+                                        "select * from note where _id="+getIntent().getStringExtra("_id"),new String[]{}
+                                );
+                                if (cursor.moveToFirst()) {
+                                    do{
+                                        if(!cursor.getString(cursor.getColumnIndex("syncState")).equals("1")){
+                                            SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+                                            db.execSQL("UPDATE note SET syncState=? WHERE _id = ? ",new String[]{"7",getIntent().getStringExtra("_id")});
+                                            Intent intent =  new Intent(getApplication(),NoteActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }else {
+                                            SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+                                            db.execSQL("delete from  note WHERE _id = ? ",new String[]{getIntent().getStringExtra("_id")});
+                                            Intent intent =  new Intent(getApplication(),NoteActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    }while (cursor.moveToNext());
+                                }
 
-                                Intent intent =  new Intent(getApplication(),NoteActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
                             }
                         });
                 normalDialog.setNegativeButton("取消",
@@ -171,11 +188,25 @@ public class NoteChangeActivity extends Activity{
 
     @Override
     public void onBackPressed() {
-        if(note_edittext.getText().toString().isEmpty()){
+        String str=note_edittext.getText().toString();
+        String _id=getIntent().getStringExtra("_id");
+        if(str.isEmpty()){
             Toast.makeText(NoteChangeActivity.this, "便签不能为空", Toast.LENGTH_SHORT).show();
         }else {
-            SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
-            db.execSQL("UPDATE note SET note_content = ? WHERE _id = ? ",new String[]{note_edittext.getText().toString(),getIntent().getStringExtra("_id")});
+            //加载SQLite数据库
+            Cursor cursor=datebaseHelper.getReadableDatabase().rawQuery(
+                    "select * from note where _id="+_id,new String[]{}
+            );
+            if (cursor.moveToFirst()) {
+                do{
+                   if(!cursor.getString(cursor.getColumnIndex("syncState")).equals("1")){
+                       SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+                       db.execSQL("UPDATE note SET note_content = ? WHERE _id = ? ",new String[]{str,_id});
+                       db.execSQL("UPDATE note SET syncState = ? WHERE _id = ? ",new String[]{"4",_id});
+                   }
+                }while (cursor.moveToNext());
+            }
+
         }
         super.onBackPressed();
     }
