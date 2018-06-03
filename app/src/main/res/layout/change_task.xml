@@ -138,12 +138,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center"
             android:weightSum="100">
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="50"
+                android:layout_weight="33"
                 android:background="@drawable/button_shape_left"
                 android:id="@+id/edit_cancel"
                 android:text="取消"
@@ -151,10 +152,18 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="50"
+                android:layout_weight="34"
                 android:text="更新"
                 android:id="@+id/edit_update"
                 android:background="@drawable/button_shape_right_blue"
+                android:layout_marginLeft="0.5dp"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:text="删除"
+                android:id="@+id/edit_delete"
+                android:background="@drawable/button_shape_right"
                 android:layout_marginLeft="0.5dp"/>
         </LinearLayout>
 

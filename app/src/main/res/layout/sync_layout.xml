@@ -32,14 +32,18 @@
             android:layout_margin="@dimen/widget_margin_10"
             app:cardCornerRadius="10dp"
             >
-            <TextView
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="@dimen/text_size_14"
-                android:id="@+id/syncInfo"
-                android:padding="10dp"
-                android:textColor="@color/cardview_dark_background"
-                android:text="点击开始同步"/>
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/text_size_14"
+                    android:id="@+id/syncInfo"
+                    android:padding="10dp"
+                    android:textColor="@color/cardview_dark_background"
+                    android:text="点击开始同步"/>
+            </ScrollView>
         </android.support.v7.widget.CardView>
 
     </LinearLayout>

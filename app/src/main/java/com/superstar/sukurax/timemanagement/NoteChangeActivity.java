@@ -197,12 +197,14 @@ public class NoteChangeActivity extends Activity{
             Cursor cursor=datebaseHelper.getReadableDatabase().rawQuery(
                     "select * from note where _id="+_id,new String[]{}
             );
+            SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
             if (cursor.moveToFirst()) {
                 do{
                    if(!cursor.getString(cursor.getColumnIndex("syncState")).equals("1")){
-                       SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
                        db.execSQL("UPDATE note SET note_content = ? WHERE _id = ? ",new String[]{str,_id});
                        db.execSQL("UPDATE note SET syncState = ? WHERE _id = ? ",new String[]{"4",_id});
+                   }else {
+                       db.execSQL("UPDATE note SET note_content = ? WHERE _id = ? ",new String[]{str,_id});
                    }
                 }while (cursor.moveToNext());
             }

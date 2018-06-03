@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,14 +27,22 @@ import com.avos.avoscloud.AVSaveOption;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.CloudQueryCallback;
 import com.avos.avoscloud.CountCallback;
+import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SignUpCallback;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
 
 import static com.superstar.sukurax.timemanagement.MainActivity.datebaseHelper;
 
@@ -44,8 +54,8 @@ public class SyncActivity extends Activity {
     android.support.v7.widget.Toolbar back_toolbar;
     Loading_view loading;
     Button syncUp,syncDown;
-    String userId,syncStr="同步信息\n";
-    Integer syncNeed=0,syncNoNeed=0,syncFalseBefore=0,syncTrue=0,syncFalse=0;
+    String userId,syncStr;
+    Integer syncNeed,syncNoNeed,syncFalseBefore,syncTrue,syncFalse;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +105,21 @@ public class SyncActivity extends Activity {
         syncDown=(Button)findViewById(R.id.syncDown);
         super.onResume();
         back_toolbar_text.setText("备份/同步");
+        final Handler mHandler = new Handler() {
+
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case 0:
+                        syncInfo.setText(syncStr);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+        };
         switch (sp.getInt("skin_num", 1)){
             case 1:
                 back_toolbar.setBackgroundColor(getResources().getColor(R.color.skinColor1_2));
@@ -148,8 +173,10 @@ public class SyncActivity extends Activity {
         syncUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                syncNeed=0;syncNoNeed=0;syncFalseBefore=0;syncTrue=0;syncFalse=0;
                 loading.show();
+                syncStr="备份信息:\n";
+                syncInfo.setText(syncStr);
                 //加载SQLite数据库
                 Cursor cursor1=datebaseHelper.getReadableDatabase().rawQuery(
                         "select * from task ",new String[]{}
@@ -169,9 +196,9 @@ public class SyncActivity extends Activity {
                         }
                         //将待增加、增加中数据逐条同步到服务端，状态改为增加中，等服务端同步成功将数据状态改为已增加。已增加统计个数加一。
                         if(cursor1.getString(cursor1.getColumnIndex("syncState")).equals("1") || cursor1.getString(cursor1.getColumnIndex("syncState")).equals("2")){
-                            String sql="insert into task(task_id,userId,content,type,time,state) values("+cursor1.getString(cursor1.getColumnIndex("_id"))+","+
-                                    userId+","+cursor1.getString(cursor1.getColumnIndex("content"))+","+cursor1.getString(cursor1.getColumnIndex("type"))+","+Escaping(cursor1.getString(cursor1.getColumnIndex("time")))
-                                    +","+cursor1.getString(cursor1.getColumnIndex("state"))+")";
+                            String sql="insert into task(task_id,userId,content,type,time,state) values('"+cursor1.getString(cursor1.getColumnIndex("_id"))+"','"+
+                                    userId+"','"+cursor1.getString(cursor1.getColumnIndex("content"))+"','"+cursor1.getString(cursor1.getColumnIndex("type"))+"','"+Escaping(cursor1.getString(cursor1.getColumnIndex("time")))
+                                    +"','"+cursor1.getString(cursor1.getColumnIndex("state"))+"')";
                             final String _id=cursor1.getString(cursor1.getColumnIndex("_id"));
                             final String content=cursor1.getString(cursor1.getColumnIndex("content"));
                             AVQuery.doCloudQueryInBackground(sql, new CloudQueryCallback<AVCloudQueryResult>() {
@@ -180,13 +207,13 @@ public class SyncActivity extends Activity {
                                     // 如果 e 为空，说明保存成功
                                     SQLiteDatabase db = datebaseHelper.getWritableDatabase();
                                     if(e==null){
-                                        db.execSQL("update  task set syncState=? where _id=?",new String[]{"3",_id});
+                                        db.execSQL("update  task set syncState=? where _id=?",new String[]{"12",_id});
                                         syncTrue++;
-                                        syncStr+="同步任务成功:"+content+"\n";
+                                        syncStr+="备份任务成功:"+content+"\n";
                                     }else {
                                         db.execSQL("update  task set syncState=? where _id=?",new String[]{"2",_id});
                                         syncFalse++;
-                                        syncStr+="同步任务失败:"+content+"\n";
+                                        syncStr+="备份任务失败:"+content+"\n";
                                     }
                                     syncInfo.setText(syncStr);
 
@@ -195,55 +222,82 @@ public class SyncActivity extends Activity {
                         }
                         //将待修改、修改中数据逐条同步到服务端，状态改为修改中，等服务端同步成功将数据状态改为已修改。已修改统计个数加一。
                         if(cursor1.getString(cursor1.getColumnIndex("syncState")).equals("4") || cursor1.getString(cursor1.getColumnIndex("syncState")).equals("5")){
-                            String sql="update task set userId="+userId+" content="+cursor1.getString(cursor1.getColumnIndex("content"))+" type="+cursor1.getString(cursor1.getColumnIndex("type"))+" time=" +
-                                    Escaping(cursor1.getString(cursor1.getColumnIndex("time")))+" state="+cursor1.getString(cursor1.getColumnIndex("state"))+" where task_id="+cursor1.getString(cursor1.getColumnIndex("_id"))+" and userId="+userId;
                             final String _id=cursor1.getString(cursor1.getColumnIndex("_id"));
                             final String content=cursor1.getString(cursor1.getColumnIndex("content"));
-
-                            AVQuery.doCloudQueryInBackground(sql, new CloudQueryCallback<AVCloudQueryResult>() {
+                            final String time=cursor1.getString(cursor1.getColumnIndex("time"));
+                            final String type=cursor1.getString(cursor1.getColumnIndex("type"));
+                            final String state=cursor1.getString(cursor1.getColumnIndex("state"));
+                            AVQuery<AVObject> query = new AVQuery<>("task");
+                            query.whereEqualTo("task_id",cursor1.getString(cursor1.getColumnIndex("_id")));
+                            query.whereEqualTo("userId",userId);
+                            query.getFirstInBackground(new GetCallback<AVObject>() {
                                 @Override
-                                public void done(AVCloudQueryResult avCloudQueryResult, AVException e) {
-                                    // 如果 e 为空，说明保存成功
-                                    SQLiteDatabase db = datebaseHelper.getWritableDatabase();
-                                    if(e==null){
-                                        db.execSQL("update  task set syncState=? where _id=?",new String[]{"6",_id});
-                                        syncTrue++;
-                                        syncStr+="同步任务成功:"+content+"\n";
-                                    }else {
-                                        db.execSQL("update  task set syncState=? where _id=?",new String[]{"5",_id});
-                                        syncFalse++;
-                                        syncStr+="同步任务失败:"+content+"\n";
-                                    }
-                                    syncInfo.setText(syncStr);
+                                public void done(final AVObject account, AVException e) {
+                                    account.put("content",content);
+                                    account.put("time",time);
+                                    account.put("type",type);
+                                    account.put("state",state);
+
+                                    AVSaveOption option = new AVSaveOption();
+                                    account.saveInBackground(option, new SaveCallback() {
+                                        @Override
+                                        public void done(AVException e) {
+
+                                            SQLiteDatabase db = datebaseHelper.getWritableDatabase();
+                                            if (e == null) {
+                                                db.execSQL("update  note set syncState=? where _id=?",new String[]{"12",_id});
+                                                ++syncTrue;
+                                                syncStr+="备份任务成功:"+content+"\n";
+                                            } else {
+                                                db.execSQL("update  note set syncState=? where _id=?",new String[]{"5",_id});
+                                                ++syncFalse;
+                                                syncStr+="备份任务失败:"+content+"\n";
+                                            }
+                                            syncInfo.setText(syncStr);
+                                        }
+                                    });
                                 }
                             });
                         }
                         //将待删除、删除中数据逐条同步到服务端，状态改为删除中，等服务端同步成功将数据状态改为已删除。已删除统计个数加一。
                         if(cursor1.getString(cursor1.getColumnIndex("syncState")).equals("7") || cursor1.getString(cursor1.getColumnIndex("syncState")).equals("8")){
-                            String sql="delete from task where task_id="+cursor1.getString(cursor1.getColumnIndex("_id"))+" and userId="+userId;
                             final String _id=cursor1.getString(cursor1.getColumnIndex("_id"));
                             final String content=cursor1.getString(cursor1.getColumnIndex("content"));
 
-                            AVQuery.doCloudQueryInBackground(sql, new CloudQueryCallback<AVCloudQueryResult>() {
+                            AVQuery<AVObject> query = new AVQuery<>("task");
+                            query.whereEqualTo("task_id",_id);
+                            query.whereEqualTo("userId",userId);
+                            query.getFirstInBackground(new GetCallback<AVObject>() {
                                 @Override
-                                public void done(AVCloudQueryResult avCloudQueryResult, AVException e) {
-                                    // 如果 e 为空，说明保存成功
-                                    SQLiteDatabase db = datebaseHelper.getWritableDatabase();
-                                    if(e==null){
-                                        db.execSQL("delete from  note WHERE _id = ? ",new String[]{_id});                                        syncTrue++;
-                                        syncStr+="同步任务成功:"+content+"\n";
-                                    }else {
-                                        db.execSQL("update  task set syncState=? where _id=?",new String[]{"8",_id});
-                                        syncFalse++;
-                                        syncStr+="同步任务失败:"+content+"\n";
-                                    }
-                                    syncInfo.setText(syncStr);
+                                public void done(final AVObject account, AVException e) {
+                                    account.deleteInBackground();
+                                    AVQuery<AVObject> query = new AVQuery<>("task");
+                                    query.whereEqualTo("task_id",_id);
+                                    query.whereEqualTo("userId",userId);
+                                    query.getFirstInBackground(new GetCallback<AVObject>() {
+                                        @Override
+                                        public void done(final AVObject account, AVException e) {
+                                            SQLiteDatabase db = datebaseHelper.getWritableDatabase();
+                                            if (account == null) {
+                                                db.execSQL("update  task set syncState=? where _id=?", new String[]{"12", _id});
+                                                ++syncTrue;
+                                                syncStr += "备份任务成功:" + content + "\n";
+                                            } else {
+                                                db.execSQL("update  task set syncState=? where _id=?", new String[]{"8", _id});
+                                                ++syncFalse;
+                                                syncStr += "备份任务失败:" + content + "\n";
+                                            }
+                                            syncInfo.setText(syncStr);
+
+                                        }
+                                    });
+
                                 }
                             });
+
                         }
                         //第三、四、五步执行完毕后，将已增加、已删除、已修改数据项状态改为已更新。统计已增加、已删除、已修改数据项数，该个数为此次同步成功的数据项个数。待增加、增加中、待删除、删除中、待修改、修改中余留个数为同步失败数量。
                         //统计同步数据项成功的数量和失败的数量。显示同步失败的数据项的不同syncState状态和个数。
-
                     }while (cursor1.moveToNext());
                 }
                 Cursor cursor2=datebaseHelper.getReadableDatabase().rawQuery(
@@ -274,11 +328,11 @@ public class SyncActivity extends Activity {
                                     if(e==null){
                                         db.execSQL("update note set syncState=? where _id=?",new String[]{"3",_id});
                                         ++syncTrue;
-                                        syncStr+="同步便签成功:"+content+"\n";
+                                        syncStr+="备份便签成功:"+content+"\n";
                                     }else {
                                         db.execSQL("update note set syncState=? where _id=?",new String[]{"2",_id});
                                         ++syncFalse;
-                                        syncStr+="同步便签失败:"+content+"\n";
+                                        syncStr+="备份便签失败:"+content+"\n";
                                     }
                                     syncInfo.setText(syncStr);
                                 }
@@ -309,11 +363,11 @@ public class SyncActivity extends Activity {
                                             if (e == null) {
                                                 db.execSQL("update  note set syncState=? where _id=?",new String[]{"6",_id});
                                                 ++syncTrue;
-                                                syncStr+="同步便签成功:"+note_content+"\n";
+                                                syncStr+="备份便签成功:"+note_content+"\n";
                                             } else {
                                                 db.execSQL("update  note set syncState=? where _id=?",new String[]{"5",_id});
                                                 ++syncFalse;
-                                                syncStr+="同步便签失败:"+note_content+"\n";
+                                                syncStr+="备份便签失败:"+note_content+"\n";
                                             }
                                             syncInfo.setText(syncStr);
                                         }
@@ -344,11 +398,11 @@ public class SyncActivity extends Activity {
                                             if (account == null) {
                                                 db.execSQL("update  note set syncState=? where _id=?", new String[]{"9", _id});
                                                 ++syncTrue;
-                                                syncStr += "同步便签成功:" + note_content + "\n";
+                                                syncStr += "备份便签成功:" + note_content + "\n";
                                             } else {
                                                 db.execSQL("update  note set syncState=? where _id=?", new String[]{"8", _id});
                                                 ++syncFalse;
-                                                syncStr += "同步便签失败:" + note_content + "\n";
+                                                syncStr += "备份便签失败:" + note_content + "\n";
                                             }
                                             syncInfo.setText(syncStr);
 
@@ -359,51 +413,129 @@ public class SyncActivity extends Activity {
                             });
                         }
                     }while (cursor2.moveToNext());
+
                 }
-                //第三、四、五步执行完毕后，将已增加、已删除、已修改数据项状态改为已更新。统计已增加、已删除、已修改数据项数，该个数为此次同步成功的数据项个数。待增加、增加中、待删除、删除中、待修改、修改中余留个数为同步失败数量。
-                //统计同步数据项成功的数量和失败的数量。显示同步失败的数据项的不同syncState状态和个数。
-                SQLiteDatabase db = datebaseHelper.getWritableDatabase();
-                db.execSQL("update  note set syncState=? where _id=?",new String[]{"12","3"});
-                db.execSQL("update  note set syncState=? where _id=?",new String[]{"12","6"});
-                db.execSQL("update  note set syncState=? where _id=?",new String[]{"12","9"});
-
-                loading.dismiss();
-                AlertDialog.Builder normalDialog =
-                        new AlertDialog.Builder(SyncActivity.this);
-                normalDialog.setTitle("同步完成");
-                normalDialog.setMessage("同步数量:"+syncNeed+"\n同步成功:"+syncTrue+"\n同步失败:"+syncFalse);
-                normalDialog.setPositiveButton("确定",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-                // 显示
-                normalDialog.show();
-
-
+                new Thread(new Runnable(){
+                    public void run(){
+                    int min=500;
+                    int max=2000;
+                    Random random = new Random();
+                    int num = random.nextInt(max)%(max-min+1) + min;
+                    try {
+                        Thread.sleep(num);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    //第三、四、五步执行完毕后，将已增加、已删除、已修改数据项状态改为已更新。统计已增加、已删除、已修改数据项数，该个数为此次同步成功的数据项个数。待增加、增加中、待删除、删除中、待修改、修改中余留个数为同步失败数量。
+                    //统计同步数据项成功的数量和失败的数量。显示同步失败的数据项的不同syncState状态和个数。
+                    SQLiteDatabase db = datebaseHelper.getWritableDatabase();
+                    db.execSQL("update  note set syncState=? where _id=?",new String[]{"12","3"});
+                    db.execSQL("update  note set syncState=? where _id=?",new String[]{"12","6"});
+                    db.execSQL("update  note set syncState=? where _id=?",new String[]{"12","9"});
+                    db.execSQL("update  task set syncState=? where _id=?",new String[]{"12","3"});
+                    db.execSQL("update  task set syncState=? where _id=?",new String[]{"12","6"});
+                    db.execSQL("update  task set syncState=? where _id=?",new String[]{"12","9"});
+                    loading.dismiss();
+                    syncStr+="\n备份数量:"+syncNeed+"\n备份成功:"+syncTrue+"\n备份失败:"+syncFalse;
+                    mHandler.sendEmptyMessage(0);
+                    }
+                }).start();
 
             }
         });
+
         syncDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                syncNeed=0;
-                syncNoNeed=0;
-                syncFalseBefore=0;
-                syncTrue=0;
-                syncFalse=0;
+                syncNeed=0;syncNoNeed=0;syncFalseBefore=0;syncTrue=0;syncFalse=0;
+                syncStr="同步信息:\n";
                 loading.show();
+//                统计syncState状态为已更新的数据项个数，该个数为此次不需要同步的数据项个数。
+//                将syncState状态为已更新以外的数据项的syncState改为待更新。
+//                将syncState状态为待更新、更新中的数据项逐条同步到本地，本地数据状态改为更新中，等同步成功将状态改为已更新。
+//                统计syncState状态为已更新的数据项数，该数据项数减去第一步得到的数据项数为此次同步成功的数据项个数。待更新、和更新中为同步失败的个数。
 
+
+//                String cql = " select * from task where userId = sukurax";
+//                AVQuery.doCloudQueryInBackground(cql, new CloudQueryCallback<AVCloudQueryResult>() {
+//                    @Override
+//                    public void done(AVCloudQueryResult avCloudQueryResult, AVException e) {
+//                        avCloudQueryResult.getResults();
+//                    }
+//                });
+                SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+                db.execSQL("delete from  note ",new String[]{});
+                db.execSQL("delete from  task ",new String[]{});
+
+
+                final AVQuery<AVObject> statusQuery = new AVQuery<>("task");
+                statusQuery.whereEqualTo("userId", userId);
+
+                AVQuery<AVObject> query = AVQuery.or(Arrays.asList(statusQuery));
+                query.findInBackground(new FindCallback<AVObject>() {
+                    @Override
+                    public void done(List<AVObject> list, AVException e) {
+                        if(!list.isEmpty()){
+                            for (int i=0;i<list.toArray().length;i++){
+                                SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+                                db.execSQL("insert into task (_id,content,type,time,state,syncState) values(?,?,?,?,?,?)",new String[]{list.get(i).get("task_id").toString(),list.get(i).get("content").toString().trim(), list.get(i).get("type").toString(),list.get(i).get("time").toString(),list.get(i).get("state").toString(),"12"});
+                                syncStr+="同步任务成功:"+list.get(i).get("content").toString()+"\n";
+                                syncInfo.setText(syncStr);
+                                syncTrue++;
+                            }
+                        }else {
+                            syncStr+="同步任务信息为空\n";
+                        }
+
+
+                    }
+                });
+
+                final AVQuery<AVObject> statusQuery2 = new AVQuery<>("note");
+                statusQuery.whereEqualTo("userId", userId);
+
+                AVQuery<AVObject> query2 = AVQuery.or(Arrays.asList(statusQuery2));
+                query2.findInBackground(new FindCallback<AVObject>() {
+                    @Override
+                    public void done(List<AVObject> list, AVException e) {
+                        if(!list.isEmpty()){
+                            for (int i=0;i<list.toArray().length;i++){
+                                SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+                                db.execSQL("insert into note (_id,note_time,note_content,syncState) values(?,?,?,?)",new String[]{list.get(i).get("note_id").toString(),list.get(i).get("note_time").toString(), list.get(i).get("note_content").toString(),"12"});
+                                syncStr+="同步便签成功:"+list.get(i).get("note_content").toString()+"\n";
+                                syncInfo.setText(syncStr);
+                                syncTrue++;
+                            }
+                        }else {
+                            syncStr+="同步便签信息为空\n";
+                        }
+
+
+                    }
+                });
+                syncInfo.setText(syncStr);
+                new Thread(new Runnable(){
+                    public void run(){
+                        int min=500;
+                        int max=2000;
+                        Random random = new Random();
+                        int num = random.nextInt(max)%(max-min+1) + min;
+                        try {
+                            Thread.sleep(num);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        loading.dismiss();
+                        syncStr+="\n同步数量:"+(syncTrue+syncFalse)+"\n同步成功:"+syncTrue+"\n同步失败:"+syncFalse;
+                        mHandler.sendEmptyMessage(0);
+                    }
+                }).start();
 
             }
         });
     }
 
     public String Escaping(String str){
-//        str=str.replaceAll("-","[-]");
-//        str=str.replaceAll(":","[:]");
         return str.replace("\\\\","\\\\\\\\");
     }
 

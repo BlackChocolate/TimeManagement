@@ -39,13 +39,18 @@
                     android:text="重要-紧急"
                     android:textSize="@dimen/text_size_20" />
 
-                <TextView
-                    android:id="@+id/task_text1"
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="@dimen/text_padding"
-                    android:paddingRight="@dimen/text_padding"
-                    android:textSize="@dimen/text_size_16" />
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/task_text1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"
+                        android:textSize="@dimen/text_size_16" />
+                </ScrollView>
+
 
             </LinearLayout>
 
@@ -66,13 +71,18 @@
                     android:text="重要-不紧急"
                     android:textSize="@dimen/text_size_20" />
 
-                <TextView
-                    android:id="@+id/task_text2"
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="@dimen/text_padding"
-                    android:paddingRight="@dimen/text_padding"
-                    android:textSize="@dimen/text_size_16" />
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/task_text2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"
+                        android:textSize="@dimen/text_size_16" />
+                </ScrollView>
+
 
             </LinearLayout>
 
@@ -104,14 +114,18 @@
                     android:padding="@dimen/text_padding"
                     android:text="不重要-紧急"
                     android:textSize="@dimen/text_size_20" />
-
-                <TextView
-                    android:id="@+id/task_text3"
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="@dimen/text_padding"
-                    android:paddingRight="@dimen/text_padding"
-                    android:textSize="@dimen/text_size_16" />
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/task_text3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"
+                        android:textSize="@dimen/text_size_16" />
+                </ScrollView>
+
 
             </LinearLayout>
 
@@ -131,14 +145,18 @@
                     android:padding="@dimen/text_padding"
                     android:text="不重要-不紧急"
                     android:textSize="@dimen/text_size_20" />
-
-                <TextView
-                    android:id="@+id/task_text4"
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="@dimen/text_padding"
-                    android:paddingRight="@dimen/text_padding"
-                    android:textSize="@dimen/text_size_16" />
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/task_text4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"
+                        android:textSize="@dimen/text_size_16" />
+                </ScrollView>
+
 
             </LinearLayout>
 

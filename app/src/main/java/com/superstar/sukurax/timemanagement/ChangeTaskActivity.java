@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -37,7 +39,7 @@ public class ChangeTaskActivity extends Activity {
     RadioGroup edit_radioG;
     DatePicker edit_date;
     TimePicker edit_time;
-    Button edit_cancel,edit_update;
+    Button edit_cancel,edit_update,edit_delete;
     RadioButton edit_radioBt1,edit_radioBt2,edit_radioBt3,edit_radioBt4;
     private Calendar cl;
     private int year,month,day,hour,minute;
@@ -46,7 +48,7 @@ public class ChangeTaskActivity extends Activity {
     PendingIntent pendingIntent;
 
     String task_id;
-    String content,type,time,state,task_date,task_time;
+    String content,type,time,state,task_date,syncState,task_time;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,18 +99,20 @@ public class ChangeTaskActivity extends Activity {
             }
         });
         edit_update=(Button)findViewById(R.id.edit_update);
+        edit_delete=(Button)findViewById(R.id.edit_delete);
 
         edit_radioBt1=(RadioButton)findViewById(R.id.edit_radioBt1);
         edit_radioBt2=(RadioButton)findViewById(R.id.edit_radioBt2);
         edit_radioBt3=(RadioButton)findViewById(R.id.edit_radioBt3);
         edit_radioBt4=(RadioButton)findViewById(R.id.edit_radioBt4);
 
-
+        remindSwitch=(Switch)findViewById(R.id.remind_switch);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        back_text.setText("提醒任务");
         switch (sp.getInt("skin_num", 1)){
             case 1:
                 back_toolbar.setBackgroundColor(getResources().getColor(R.color.skinColor1_2));
@@ -132,17 +136,20 @@ public class ChangeTaskActivity extends Activity {
                 break;
         }
 
-        task_id=getIntent().getStringExtra("task_id");
-        Log.d("test","修改task_id:"+task_id);
+        task_id=getIntent().getStringExtra("_id");
+        SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
         Cursor cursor=datebaseHelper.getReadableDatabase().rawQuery(
-                "select * from task where _id=?",new String[]{task_id+""}
+                "select * from task where _id=?",new String[]{task_id}
         );
         if (cursor.moveToFirst()) {
             content=cursor.getString(cursor.getColumnIndex("content"));
             type=cursor.getString(cursor.getColumnIndex("type"));
             time=cursor.getString(cursor.getColumnIndex("time"));
             state=cursor.getString(cursor.getColumnIndex("state"));
+            syncState=cursor.getString(cursor.getColumnIndex("syncState"));
+
         }
+
         edit_text.setText(content);
         switch (type){
             case "1":
@@ -160,11 +167,12 @@ public class ChangeTaskActivity extends Activity {
             default:
                 break;
         }
-        year=Integer.parseInt(time.split("-")[0]);
-        month=Integer.parseInt(time.split("-")[1])-1;
-        day=Integer.parseInt(time.split(" ")[0].split("-")[1]);
-        hour=Integer.parseInt(time.split(" ")[1].split(":")[0]);
-        minute=Integer.parseInt(time.split(" ")[1].split(":")[1]);
+
+//        year=Integer.parseInt(time.split("-")[0]);
+//        month=Integer.parseInt(time.split("-")[1])-1;
+//        day=Integer.parseInt(time.split(" ")[0].split("-")[1]);
+//        hour=Integer.parseInt(time.split(" ")[1].split(":")[0]);
+//        minute=Integer.parseInt(time.split(" ")[1].split(":")[1]);
 
         edit_date.init(year, month, day, new DatePicker.OnDateChangedListener() {
 
@@ -227,9 +235,17 @@ public class ChangeTaskActivity extends Activity {
                     }else if(!remindSwitch.isChecked()){
                         temp="0";
                     }
-                    SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
-                    db.execSQL("update  task set  content=? and type=? and time=? and state=? where _id=?",new String[]{edit_text.getText().toString(), type.toString(),task_date+" "+task_time,temp,task_id});
-                    Cursor cursor = db.rawQuery("select last_insert_rowid() from task",null);
+                    SQLiteDatabase db = datebaseHelper.getWritableDatabase();
+                    if(syncState.equals("1")){
+                        db.execSQL("UPDATE task SET content = ? WHERE _id = ? ",new String[]{edit_text.getText().toString(),task_id});
+                        db.execSQL("UPDATE task SET type = ? WHERE _id = ? ",new String[]{type.toString(),task_id});
+                        db.execSQL("UPDATE task SET state = ? WHERE _id = ? ",new String[]{temp,task_id});
+                    }else {
+                        db.execSQL("UPDATE task SET content = ? WHERE _id = ? ",new String[]{edit_text.getText().toString(),task_id});
+                        db.execSQL("UPDATE task SET type = ? WHERE _id = ? ",new String[]{type.toString(),task_id});
+                        db.execSQL("UPDATE task SET state = ? WHERE _id = ? ",new String[]{temp,task_id});
+                        db.execSQL("UPDATE task SET syncState = ? WHERE _id = ? ",new String[]{"4",task_id});
+                    }
 
                     //提醒服务
 
@@ -238,6 +254,54 @@ public class ChangeTaskActivity extends Activity {
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                 }
+            }
+        });
+        edit_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog.Builder normalDialog =
+                        new AlertDialog.Builder(ChangeTaskActivity.this);
+                normalDialog.setTitle("确认");
+                normalDialog.setMessage("确定要删除该任务吗");
+                normalDialog.setPositiveButton("确定",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //加载SQLite数据库
+                                Cursor cursor=datebaseHelper.getReadableDatabase().rawQuery(
+                                        "select * from task where _id="+getIntent().getStringExtra("_id"),new String[]{}
+                                );
+                                if (cursor.moveToFirst()) {
+                                    do{
+                                        if(!cursor.getString(cursor.getColumnIndex("syncState")).equals("1")){
+                                            SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+                                            db.execSQL("UPDATE task SET syncState=? WHERE _id = ? ",new String[]{"7",getIntent().getStringExtra("_id")});
+                                            Intent intent =  new Intent(getApplication(),CurrentActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }else {
+                                            SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+                                            db.execSQL("delete from  task WHERE _id = ? ",new String[]{getIntent().getStringExtra("_id")});
+                                            Intent intent =  new Intent(getApplication(),CurrentActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    }while (cursor.moveToNext());
+                                }
+
+                            }
+                        });
+                normalDialog.setNegativeButton("取消",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //...To-do
+                            }
+                        });
+                // 显示
+                normalDialog.show();
             }
         });
     }
