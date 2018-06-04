@@ -22,17 +22,4 @@
             android:textSize="@dimen/text_size_title" />
     </LinearLayout>
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical"-->
-        <!--android:id="@+id/switch_something"-->
-        <!--android:paddingLeft="@dimen/text_padding"-->
-        <!--android:paddingRight="@dimen/text_padding">-->
-        <!--<ListView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/task_history_list">-->
-        <!--</ListView>-->
-    <!--</LinearLayout>-->
 </LinearLayout>

@@ -23,13 +23,18 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/text_padding"
+            android:paddingLeft="@dimen/padding_20"
+            android:paddingRight="@dimen/padding_20"
+            android:paddingTop="@dimen/text_padding"
+            android:paddingBottom="@dimen/text_padding"
             android:text="执行中"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/widget_margin_20"
+        android:layout_marginRight="@dimen/widget_margin_20">
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,18 +50,23 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/text_padding"
+            android:paddingLeft="@dimen/padding_20"
+            android:paddingRight="@dimen/padding_20"
+            android:paddingTop="@dimen/text_padding"
+            android:paddingBottom="@dimen/text_padding"
             android:text="已完成"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:layout_marginLeft="@dimen/widget_margin_20"
+        android:layout_marginRight="@dimen/widget_margin_20">
+
         <ListView
+            android:id="@+id/done_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/done_list"
             android:background="@color/white">
 
         </ListView>

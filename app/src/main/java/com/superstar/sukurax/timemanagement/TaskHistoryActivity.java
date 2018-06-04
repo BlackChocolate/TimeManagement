@@ -2,6 +2,7 @@ package com.superstar.sukurax.timemanagement;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -134,17 +135,14 @@ public class TaskHistoryActivity extends Activity {
                     R.layout.task_history_list_item,
                     new String[] { "_id","time", "content","state" },// 与下面数组元素要一一对应
                     new int[] {R.id.task_history_id,R.id.task_history_time, R.id.task_history_content ,R.id.task_history_state});
-
             listView.setAdapter(simpleAdapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Map<String,Object> map = data.get(i);
                     String _id = map.get("_id").toString();
+                    startActivity(new Intent(TaskHistoryActivity.this,ChangeTaskActivity.class).putExtra("_id",_id));
 
-//                    Intent intent =  new Intent(getApplication(),NoteChangeActivity.class);
-//                    intent.putExtra("_id",_id);
-//                    startActivity(intent);
                 }
             });
         }

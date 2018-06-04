@@ -135,7 +135,7 @@ public class EditActivity extends Activity{
                             break;
                     }
                     Log.d("test","新任务type:"+type);
-                    //0代表不提醒或已提醒，1代表提醒
+                    //0代表不执行、已提醒、不提醒，1代表中执行，符合条件后提醒
                     String temp="1";
                     if(remindSwitch.isChecked()){
                         temp="1";

@@ -455,14 +455,6 @@ public class SyncActivity extends Activity {
 //                将syncState状态为待更新、更新中的数据项逐条同步到本地，本地数据状态改为更新中，等同步成功将状态改为已更新。
 //                统计syncState状态为已更新的数据项数，该数据项数减去第一步得到的数据项数为此次同步成功的数据项个数。待更新、和更新中为同步失败的个数。
 
-
-//                String cql = " select * from task where userId = sukurax";
-//                AVQuery.doCloudQueryInBackground(cql, new CloudQueryCallback<AVCloudQueryResult>() {
-//                    @Override
-//                    public void done(AVCloudQueryResult avCloudQueryResult, AVException e) {
-//                        avCloudQueryResult.getResults();
-//                    }
-//                });
                 SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
                 db.execSQL("delete from  note ",new String[]{});
                 db.execSQL("delete from  task ",new String[]{});

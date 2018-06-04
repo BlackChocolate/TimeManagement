@@ -295,24 +295,25 @@ public class MainActivity extends Activity
         String value1 = "",value2="",value3="",value4 = "";
         if (cursor.moveToFirst()) {
             do{
-                switch (cursor.getString(cursor.getColumnIndex("type"))) {
-                    case "1":
-                        value1+=cursor.getString(cursor.getColumnIndex("content"))+"\n";
-                        break;
-                    case "2":
-                        value2+=cursor.getString(cursor.getColumnIndex("content"))+"\n";
-                        break;
-                    case "3":
-                        value3+=cursor.getString(cursor.getColumnIndex("content"))+"\n";
-                        break;
-                    case "4":
-                        value4+=cursor.getString(cursor.getColumnIndex("content"))+"\n";
-                        break;
-                    default:
-                        Toast.makeText(MainActivity.this, "获取星期错误", Toast.LENGTH_SHORT).show();
-                        break;
-                }
+                //不加载state为0的任务，0代表不执行，即不提醒或者已提醒，1代表中执行，符合条件后提醒
                 if(cursor.getString(cursor.getColumnIndex("state")).equals("1")){
+                    switch (cursor.getString(cursor.getColumnIndex("type"))) {
+                        case "1":
+                            value1+=cursor.getString(cursor.getColumnIndex("content"))+"\n";
+                            break;
+                        case "2":
+                            value2+=cursor.getString(cursor.getColumnIndex("content"))+"\n";
+                            break;
+                        case "3":
+                            value3+=cursor.getString(cursor.getColumnIndex("content"))+"\n";
+                            break;
+                        case "4":
+                            value4+=cursor.getString(cursor.getColumnIndex("content"))+"\n";
+                            break;
+                        default:
+                            Toast.makeText(MainActivity.this, "获取星期错误", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                     undoneTask+=1;
                 }
 
