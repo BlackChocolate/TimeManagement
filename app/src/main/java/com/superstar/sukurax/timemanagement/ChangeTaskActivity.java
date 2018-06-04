@@ -42,7 +42,7 @@ public class ChangeTaskActivity extends Activity {
     Button edit_cancel,edit_update,edit_delete;
     RadioButton edit_radioBt1,edit_radioBt2,edit_radioBt3,edit_radioBt4;
     private Calendar cl;
-    private int year,month,day,hour,minute;
+//    private int year,month,day,hour,minute;
     Switch remindSwitch;
     AlarmManager alarmManager;
     PendingIntent pendingIntent;
@@ -173,6 +173,13 @@ public class ChangeTaskActivity extends Activity {
 //        day=Integer.parseInt(time.split(" ")[0].split("-")[1]);
 //        hour=Integer.parseInt(time.split(" ")[1].split(":")[0]);
 //        minute=Integer.parseInt(time.split(" ")[1].split(":")[1]);
+        Calendar cl = Calendar.getInstance();
+        int year = cl.get(Calendar.YEAR);
+        int month = cl.get(Calendar.MONTH) ;
+        int day = cl.get(Calendar.DAY_OF_MONTH);
+        int hour = cl.get(Calendar.HOUR_OF_DAY);
+        int minute = cl.get(Calendar.MINUTE);
+
 
         edit_date.init(year, month, day, new DatePicker.OnDateChangedListener() {
 

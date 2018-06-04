@@ -17,9 +17,11 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
         android:orientation="vertical"
+        android:padding="@dimen/padding_20"
         android:theme="@style/ThemeOverlay.AppCompat.Dark">
         <ImageView
             android:id="@+id/userPic"
@@ -31,8 +33,11 @@
         <TextView
             android:id="@+id/userName"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:text="test"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/padding_20"
+            android:text="未登录"
+            android:textColor="@color/cardview_dark_background"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     </LinearLayout>
@@ -61,6 +66,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:orientation="vertical"
                         android:id="@+id/tab1">
                         <TextView
                             android:layout_width="match_parent"
@@ -69,13 +75,76 @@
                             android:gravity="top"
                             android:textSize="@dimen/text_size_18"
                             android:focusable="true"
+                            android:id="@+id/today"
                             android:focusableInTouchMode="true"
-                            android:text="输入你想记录的内容"/>
+                            android:text="6月4号"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/widget_margin"
+                            android:layout_marginLeft="@dimen/widget_margin"
+                            android:layout_marginRight="@dimen/widget_margin"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_18"
+                                android:text="今日完成:"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_18"
+                                android:id="@+id/todayTrue"
+                                android:layout_marginLeft="@dimen/widget_margin"
+                                android:textColor="#00ff00"
+                                android:text=""/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/widget_margin"
+                            android:layout_marginLeft="@dimen/widget_margin"
+                            android:layout_marginRight="@dimen/widget_margin"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_18"
+                                android:text="今日待办:"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_18"
+                                android:id="@+id/todayFalse"
+                                android:textColor="@color/text_red"
+                                android:layout_marginLeft="@dimen/widget_margin"
+                                android:text=""/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/widget_margin"
+                            android:layout_marginLeft="@dimen/widget_margin"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_18"
+                                android:text="工作效率:"/>
+                            <RatingBar
+                                android:layout_width="wrap_content"
+                                android:id="@+id/todayRatingBar"
+                                android:isIndicator="true"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/tab2">
+                        android:id="@+id/tab2"
+                        android:orientation="vertical">
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -83,13 +152,75 @@
                             android:gravity="top"
                             android:textSize="@dimen/text_size_18"
                             android:focusable="true"
+                            android:id="@+id/week"
                             android:focusableInTouchMode="true"
-                            android:text="输入你想记录的内容"/>
+                            android:text="6月第二周"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/widget_margin"
+                            android:layout_marginLeft="@dimen/widget_margin"
+                            android:layout_marginRight="@dimen/widget_margin"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_18"
+                                android:text="本周完成:"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_18"
+                                android:id="@+id/weekTrue"
+                                android:layout_marginLeft="@dimen/widget_margin"
+                                android:textColor="#00ff00"
+                                android:text=""/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/widget_margin"
+                            android:layout_marginLeft="@dimen/widget_margin"
+                            android:layout_marginRight="@dimen/widget_margin"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_18"
+                                android:text="本周待办:"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_18"
+                                android:id="@+id/weekFalse"
+                                android:textColor="@color/text_red"
+                                android:layout_marginLeft="@dimen/widget_margin"
+                                android:text=""/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/widget_margin"
+                            android:layout_marginLeft="@dimen/widget_margin"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_18"
+                                android:text="工作效率:"/>
+                            <RatingBar
+                                android:layout_width="wrap_content"
+                                android:id="@+id/weekRatingBar"
+                                android:isIndicator="true"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/tab3">
+                        android:id="@+id/tab3"
+                        android:orientation="vertical">
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -97,8 +228,69 @@
                             android:gravity="top"
                             android:textSize="@dimen/text_size_18"
                             android:focusable="true"
+                            android:id="@+id/month"
                             android:focusableInTouchMode="true"
-                            android:text="输入你想记录的内容"/>
+                            android:text="6月第二周"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/widget_margin"
+                            android:layout_marginLeft="@dimen/widget_margin"
+                            android:layout_marginRight="@dimen/widget_margin"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_18"
+                                android:text="本月完成:"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_18"
+                                android:id="@+id/monthTrue"
+                                android:layout_marginLeft="@dimen/widget_margin"
+                                android:textColor="#00ff00"
+                                android:text=""/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/widget_margin"
+                            android:layout_marginLeft="@dimen/widget_margin"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_18"
+                                android:text="本月待办:"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_18"
+                                android:id="@+id/monthFalse"
+                                android:textColor="@color/text_red"
+                                android:layout_marginLeft="@dimen/widget_margin"
+                                android:text=""/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/widget_margin"
+                            android:layout_marginLeft="@dimen/widget_margin"
+                            android:layout_marginRight="@dimen/widget_margin"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_18"
+                                android:text="工作效率:"/>
+                            <RatingBar
+                                android:layout_width="wrap_content"
+                                android:id="@+id/monthRatingBar"
+                                android:isIndicator="true"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>

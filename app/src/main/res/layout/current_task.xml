@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bg_grey">
+    android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/undone_list"
-            android:background="@color/white">
+            >
         </ListView>
     </LinearLayout>
 
@@ -67,7 +67,7 @@
             android:id="@+id/done_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white">
+            >
 
         </ListView>
     </LinearLayout>
