@@ -160,68 +160,95 @@ public class TaskActivity extends Activity {
         task_delay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //1弹出时间选择器，选择1-60分钟延后提醒
-                AlertDialog.Builder builder7 = new AlertDialog.Builder(
-                        TaskActivity.this);
-                builder7.setTitle("选择延迟时间：分钟");
-                builder7.setIcon(R.mipmap.ic_launcher);
-                View numPickerView = LayoutInflater.from(TaskActivity.this).inflate(
-                        R.layout.delay_time_picker_layout, null);
-                delay_time_picker=(NumberPicker)numPickerView.findViewById(R.id.delay_time_picker);
-                delay_time_picker.setValue(5);
-                delay_time_picker.setMinValue(1);
-                delay_time_picker.setMaxValue(60);
-                delay_time_picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                    @Override
-                    public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                        timeTemp=i1;
-                        Toast.makeText(TaskActivity.this, "选中了"+timeTemp, Toast.LENGTH_SHORT).show();
-                    }
-                });
-                delay_time_picker.setOnScrollListener(new NumberPicker.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChange(NumberPicker numberPicker, int i) {
+                timeTemp=5;
+                AlarmManager alarm = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                //Intent设置要启动的组件，这里启动广播
+                Intent myIntent = new Intent();
+                myIntent.setAction(GlobalValues.TIMER_ACTION);
 
-                    }
-                });
-                builder7.setPositiveButton("确定",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                AlarmManager alarm = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                                //Intent设置要启动的组件，这里启动广播
-                                Intent myIntent = new Intent();
-                                myIntent.setAction(GlobalValues.TIMER_ACTION);
+                myIntent.putExtra("alarmId",alarmId);
+                myIntent.putExtra("alarmContent",alarmContent);
+                //PendingIntent对象设置动作,启动的是Activity还是Service,或广播!
+                PendingIntent sender = PendingIntent.getBroadcast(getApplicationContext(), alarmId, myIntent, FLAG_UPDATE_CURRENT);
+                //更新闹钟
+                assert alarm != null;
+                alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeTemp*60*1000, sender);
+                //更新内容
+                SQLiteDatabase db = datebaseHelper.getWritableDatabase();
 
-                                myIntent.putExtra("alarmId",alarmId);
-                                myIntent.putExtra("alarmContent",alarmContent);
-                                //PendingIntent对象设置动作,启动的是Activity还是Service,或广播!
-                                PendingIntent sender = PendingIntent.getBroadcast(getApplicationContext(), alarmId, myIntent, FLAG_UPDATE_CURRENT);
-                                //更新闹钟
-                                assert alarm != null;
-                                alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeTemp*60*1000, sender);
-                                //更新内容
-                                SQLiteDatabase db = datebaseHelper.getWritableDatabase();
+                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//这个是你要转成后的时间的格式
+                String timeDelay = sdf.format(new Date(Long.parseLong(String.valueOf(new Date().getTime()+timeTemp*60*1000))));
+                db.execSQL("UPDATE task SET time = ? WHERE _id = ? ", new String[]{timeDelay.split(":")[0]+":"+timeDelay.split(":")[1], alarmId.toString()});
+                //更新通知
+                notificationCancel(alarmId);
 
-                                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//这个是你要转成后的时间的格式
-                                String timeDelay = sdf.format(new Date(Long.parseLong(String.valueOf(new Date().getTime()+timeTemp*60*1000))));
-                                db.execSQL("UPDATE task SET time = ? WHERE _id = ? ", new String[]{timeDelay, alarmId.toString()});
-                                //更新通知
-                                notificationCancel(alarmId);
+                Intent intent =  new Intent(getApplication(),MainActivity.class);
+                startActivity(intent);
 
-                                Intent intent =  new Intent(getApplication(),MainActivity.class);
-                                startActivity(intent);
-                            }
-                        });
-                builder7.setNegativeButton("取消",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-                // 显示
-
+//                //1弹出时间选择器，选择1-60分钟延后提醒
+//                AlertDialog.Builder builder7 = new AlertDialog.Builder(
+//                        TaskActivity.this);
+//                builder7.setTitle("选择延迟时间:分钟");
+//                builder7.setIcon(R.mipmap.ic_launcher);
+//                View numPickerView = LayoutInflater.from(TaskActivity.this).inflate(
+//                        R.layout.delay_time_picker_layout, null);
+//                delay_time_picker=(NumberPicker)numPickerView.findViewById(R.id.delay_time_picker);
+//                delay_time_picker.setValue(5);
+//                delay_time_picker.setMinValue(1);
+//                delay_time_picker.setMaxValue(60);
+//                delay_time_picker.invalidate();
+//                delay_time_picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//                    @Override
+//                    public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+//                        timeTemp=i1;
+//                        Toast.makeText(TaskActivity.this, "选中了"+timeTemp, Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//                delay_time_picker.setOnScrollListener(new NumberPicker.OnScrollListener() {
+//                    @Override
+//                    public void onScrollStateChange(NumberPicker numberPicker, int i) {
+//
+//                    }
+//                });
+//                numPickerView.isShown();
+//                builder7.setPositiveButton("确定",
+//                        new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                AlarmManager alarm = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+//                                //Intent设置要启动的组件，这里启动广播
+//                                Intent myIntent = new Intent();
+//                                myIntent.setAction(GlobalValues.TIMER_ACTION);
+//
+//                                myIntent.putExtra("alarmId",alarmId);
+//                                myIntent.putExtra("alarmContent",alarmContent);
+//                                //PendingIntent对象设置动作,启动的是Activity还是Service,或广播!
+//                                PendingIntent sender = PendingIntent.getBroadcast(getApplicationContext(), alarmId, myIntent, FLAG_UPDATE_CURRENT);
+//                                //更新闹钟
+//                                assert alarm != null;
+//                                alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeTemp*60*1000, sender);
+//                                //更新内容
+//                                SQLiteDatabase db = datebaseHelper.getWritableDatabase();
+//
+//                                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//这个是你要转成后的时间的格式
+//                                String timeDelay = sdf.format(new Date(Long.parseLong(String.valueOf(new Date().getTime()+timeTemp*60*1000))));
+//                                db.execSQL("UPDATE task SET time = ? WHERE _id = ? ", new String[]{timeDelay, alarmId.toString()});
+//                                //更新通知
+//                                notificationCancel(alarmId);
+//
+//                                Intent intent =  new Intent(getApplication(),MainActivity.class);
+//                                startActivity(intent);
+//                            }
+//                        });
+//                builder7.setNegativeButton("取消",
+//                        new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//
+//                            }
+//                        });
+//                // 显示
+//                builder7.show();
             }
         });
     }

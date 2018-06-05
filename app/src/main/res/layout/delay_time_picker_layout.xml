@@ -4,6 +4,6 @@
     android:layout_height="match_parent">
     <NumberPicker
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:id="@+id/delay_time_picker"></NumberPicker>
 </LinearLayout>

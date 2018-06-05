@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -31,7 +32,7 @@ public class RemindSettingActivity extends Activity {
     Toolbar back_toolbar;
 
     TextView userName,today,todayTrue,todayFalse,week,weekTrue,weekFalse,month,monthTrue,monthFalse;
-    Integer todayTrueNum,todayFalseNum,weekTrueNum,weekFalseNum,monthTrueNum,monthFalseNum;
+    Integer todayTrueNum=0,todayFalseNum=0,weekTrueNum=0,weekFalseNum=0,monthTrueNum=0,monthFalseNum=0;
     RatingBar todayRatingBar,weekRatingBar,monthRatingBar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -195,19 +196,19 @@ public class RemindSettingActivity extends Activity {
                 SimpleDateFormat sdfto = new SimpleDateFormat("yyyy-MM-dd");
                 Date today=null,to = null,from=null;
                 try {
-                    today=todayTime.parse(year+"-"+monthC+"-"+day);
+                    today=todayTime.parse(timeCursor+":00");
                     from= sdffrom.parse(weekBegin);
                     to= sdfto.parse(weekEnd);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                System.out.println();
                 if(belongCalendar(today,from,to)){
                     if(cursor.getString(cursor.getColumnIndex("state")).equals("0")){
                         weekTrueNum++;
                     }else{
                         weekFalseNum++;
                     }
+
                 }
                 //当月判断
                 if(timeCursorYear==year&timeCursorMonth==monthC){
@@ -219,18 +220,36 @@ public class RemindSettingActivity extends Activity {
                 }
             }while (cursor.moveToNext());
         }
-        todayTrue.setText(todayTrueNum);
-        todayFalse.setText(todayFalseNum);
+        todayTrue.setText(String.valueOf(todayTrueNum));
+        todayFalse.setText(String.valueOf(todayFalseNum));
         todayRatingBar.setNumStars(5);
-        todayRatingBar.setRating((int)(Math.ceil(todayTrueNum/(todayTrueNum+todayFalseNum))));
-        weekTrue.setText(weekTrueNum);
-        weekFalse.setText(weekFalseNum);
+        if((todayTrueNum-todayFalseNum)<=0){
+            todayRatingBar.setRating(0);
+        }else if(todayTrueNum-todayFalseNum>5){
+            todayRatingBar.setRating(5);
+        }else {
+            todayRatingBar.setRating(todayTrueNum-todayFalseNum);
+        }
+        weekTrue.setText(String.valueOf(weekTrueNum));
+        weekFalse.setText(String.valueOf(weekFalseNum));
         weekRatingBar.setNumStars(5);
-        weekRatingBar.setRating((int)(Math.ceil(weekTrueNum/(weekTrueNum+weekFalseNum))));
-        monthTrue.setText(monthTrueNum);
-        monthFalse.setText(monthFalseNum);
+        if((weekTrueNum-weekFalseNum)<=0){
+            weekRatingBar.setRating(0);
+        }else if(weekTrueNum-weekFalseNum>5){
+            weekRatingBar.setRating(5);
+        }else {
+            weekRatingBar.setRating(weekTrueNum-weekFalseNum);
+        }
+        monthTrue.setText(String.valueOf(monthTrueNum));
+        monthFalse.setText(String.valueOf(monthFalseNum));
         monthRatingBar.setNumStars(5);
-        monthRatingBar.setRating((int)(Math.ceil(monthTrueNum/(monthTrueNum+monthFalseNum))));
+        if((monthTrueNum-monthFalseNum)<=0){
+            monthRatingBar.setRating(0);
+        }else if(monthTrueNum-monthFalseNum>5){
+            monthRatingBar.setRating(5);
+        }else {
+            monthRatingBar.setRating(monthTrueNum-monthFalseNum);
+        }
 
     }
     public static boolean belongCalendar(Date time, Date from, Date to) {

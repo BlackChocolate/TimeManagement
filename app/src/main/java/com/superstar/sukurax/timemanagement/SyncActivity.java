@@ -532,24 +532,22 @@ public class SyncActivity extends Activity {
                                     //存在，状态为已更新的不更新
                                 }else if(noteArrayAll.indexOf(list.get(i).get("note_id").toString())==-1){
                                     //不存在插入
-                                    db.execSQL("insert into note (_id,content,type,time,state,syncState) values(?,?,?,?,?,?)",new String[]{list.get(i).get("note_id").toString(),list.get(i).get("content").toString().trim(), list.get(i).get("type").toString(),list.get(i).get("time").toString(),list.get(i).get("state").toString(),"12"});
-                                    syncStr+="同步任务成功:"+list.get(i).get("content").toString()+"\n";
+                                    db.execSQL("insert into note (_id,note_content,note_time,syncState) values(?,?,?,?)",new String[]{list.get(i).get("note_id").toString(),list.get(i).get("note_content").toString().trim(), list.get(i).get("note_time").toString(),"12"});
+                                    syncStr+="同步便签成功:"+list.get(i).get("note_content").toString()+"\n";
                                     syncInfo.setText(syncStr);
                                     syncTrue++;
                                 }else {
                                     //存在覆盖
-                                    db.execSQL("UPDATE note SET content = ? WHERE _id = ? ",new String[]{list.get(i).get("content").toString().trim(),list.get(i).get("note_id").toString()});
-                                    db.execSQL("UPDATE note SET type = ? WHERE _id = ? ",new String[]{list.get(i).get("type").toString(),list.get(i).get("note_id").toString()});
-                                    db.execSQL("UPDATE note SET time = ? WHERE _id = ? ",new String[]{list.get(i).get("time").toString(),list.get(i).get("note_id").toString()});
-                                    db.execSQL("UPDATE note SET state = ? WHERE _id = ? ",new String[]{list.get(i).get("state").toString(),list.get(i).get("note_id").toString()});
+                                    db.execSQL("UPDATE note SET note_content = ? WHERE _id = ? ",new String[]{list.get(i).get("note_content").toString().trim(),list.get(i).get("note_id").toString()});
+                                    db.execSQL("UPDATE note SET note_time = ? WHERE _id = ? ",new String[]{list.get(i).get("note_time").toString(),list.get(i).get("note_id").toString()});
                                     db.execSQL("UPDATE note SET syncState = ? WHERE _id = ? ",new String[]{"12",list.get(i).get("note_id").toString()});
-                                    syncStr+="同步任务成功:"+list.get(i).get("content").toString()+"\n";
+                                    syncStr+="同步便签成功:"+list.get(i).get("note_content").toString()+"\n";
                                     syncInfo.setText(syncStr);
                                     syncTrue++;
                                 }
                             }
                         }else {
-                            syncStr+="同步任务信息为空\n";
+                            syncStr+="同步便签信息为空\n";
                         }
                     }
                 });

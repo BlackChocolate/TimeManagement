@@ -147,8 +147,10 @@ public class ChangeTaskActivity extends Activity {
             time=cursor.getString(cursor.getColumnIndex("time"));
             state=cursor.getString(cursor.getColumnIndex("state"));
             syncState=cursor.getString(cursor.getColumnIndex("syncState"));
-
         }
+
+        task_date=time.split(" ")[0];
+        task_time=time.split(" ")[1];
 
         edit_text.setText(content);
         switch (type){
@@ -175,7 +177,7 @@ public class ChangeTaskActivity extends Activity {
         int hour = cl.get(Calendar.HOUR_OF_DAY);
         int minute = cl.get(Calendar.MINUTE);
 
-        edit_date.init(Integer.parseInt(time.split("-")[0]), Integer.parseInt(time.split("-")[1]), Integer.parseInt(time.split(" ")[0].split("-")[2]), new DatePicker.OnDateChangedListener() {
+        edit_date.init(Integer.parseInt(time.split("-")[0]), Integer.parseInt(time.split("-")[1])-1, Integer.parseInt(time.split(" ")[0].split("-")[2]), new DatePicker.OnDateChangedListener() {
 
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear,
