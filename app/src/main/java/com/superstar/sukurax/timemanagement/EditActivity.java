@@ -150,7 +150,6 @@ public class EditActivity extends Activity{
                     if(cursor.moveToFirst()) {
                         strid = cursor.getInt(0);
                     }
-                    Log.d("test","新任务id:"+strid);
                     if(remindSwitch.isChecked()){
                         if(delayTimeCalculation()>0)
                         {

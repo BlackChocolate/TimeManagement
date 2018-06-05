@@ -35,6 +35,6 @@
         android:id="@+id/userEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="" />
+        android:text="当前用户懒得写~" />
 
 </LinearLayout>

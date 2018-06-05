@@ -168,11 +168,6 @@ public class ChangeTaskActivity extends Activity {
                 break;
         }
 
-//        year=Integer.parseInt(time.split("-")[0]);
-//        month=Integer.parseInt(time.split("-")[1])-1;
-//        day=Integer.parseInt(time.split(" ")[0].split("-")[1]);
-//        hour=Integer.parseInt(time.split(" ")[1].split(":")[0]);
-//        minute=Integer.parseInt(time.split(" ")[1].split(":")[1]);
         Calendar cl = Calendar.getInstance();
         int year = cl.get(Calendar.YEAR);
         int month = cl.get(Calendar.MONTH) ;
@@ -180,15 +175,14 @@ public class ChangeTaskActivity extends Activity {
         int hour = cl.get(Calendar.HOUR_OF_DAY);
         int minute = cl.get(Calendar.MINUTE);
 
-
-        edit_date.init(year, month, day, new DatePicker.OnDateChangedListener() {
+        edit_date.init(Integer.parseInt(time.split("-")[0]), Integer.parseInt(time.split("-")[1]), Integer.parseInt(time.split(" ")[0].split("-")[2]), new DatePicker.OnDateChangedListener() {
 
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear,
                                       int dayOfMonth) {
                 // TODO Auto-generated method stub
                 setTitle(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
-                task_date=(year-2000)+"-"+(monthOfYear+1)+"-"+dayOfMonth;
+                task_date=year+"-"+(monthOfYear+1)+"-"+dayOfMonth;
             }
         });
         edit_time.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
@@ -246,10 +240,12 @@ public class ChangeTaskActivity extends Activity {
                     if(syncState.equals("1")){
                         db.execSQL("UPDATE task SET content = ? WHERE _id = ? ",new String[]{edit_text.getText().toString(),task_id});
                         db.execSQL("UPDATE task SET type = ? WHERE _id = ? ",new String[]{type.toString(),task_id});
+                        db.execSQL("UPDATE task SET time = ? WHERE _id = ? ",new String[]{task_date+" "+task_time,task_id});
                         db.execSQL("UPDATE task SET state = ? WHERE _id = ? ",new String[]{temp,task_id});
                     }else {
                         db.execSQL("UPDATE task SET content = ? WHERE _id = ? ",new String[]{edit_text.getText().toString(),task_id});
                         db.execSQL("UPDATE task SET type = ? WHERE _id = ? ",new String[]{type.toString(),task_id});
+                        db.execSQL("UPDATE task SET time = ? WHERE _id = ? ",new String[]{task_date+" "+task_time,task_id});
                         db.execSQL("UPDATE task SET state = ? WHERE _id = ? ",new String[]{temp,task_id});
                         db.execSQL("UPDATE task SET syncState = ? WHERE _id = ? ",new String[]{"4",task_id});
                     }

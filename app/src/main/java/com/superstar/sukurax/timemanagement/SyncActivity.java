@@ -36,6 +36,7 @@ import com.avos.avoscloud.SignUpCallback;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -455,10 +456,31 @@ public class SyncActivity extends Activity {
 //                将syncState状态为待更新、更新中的数据项逐条同步到本地，本地数据状态改为更新中，等同步成功将状态改为已更新。
 //                统计syncState状态为已更新的数据项数，该数据项数减去第一步得到的数据项数为此次同步成功的数据项个数。待更新、和更新中为同步失败的个数。
 
-                SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
-                db.execSQL("delete from  note ",new String[]{});
-                db.execSQL("delete from  task ",new String[]{});
+                Cursor cursor1=datebaseHelper.getReadableDatabase().rawQuery(
+                        "select * from task ",new String[]{}
+                );
+                final ArrayList<String> taskArrayAll = new ArrayList<String> (), taskArrayNoNeed= new ArrayList<String> ();
+                if (cursor1.moveToFirst()) {
+                    do{
+                        taskArrayAll.add(cursor1.getString(cursor1.getColumnIndex("_id")));
+                        if(cursor1.getString(cursor1.getColumnIndex("syncState")).equals("12")){
+                            taskArrayNoNeed.add(cursor1.getString(cursor1.getColumnIndex("_id")));
+                        }
+                    }while (cursor1.moveToNext());
+                }
 
+                Cursor cursor2=datebaseHelper.getReadableDatabase().rawQuery(
+                        "select * from note ",new String[]{}
+                );
+                final ArrayList<String> noteArrayAll= new ArrayList<String> (),noteArrayNoNeed = new ArrayList<String> ();
+                if (cursor2.moveToFirst()) {
+                    do{
+                        noteArrayAll.add(cursor2.getString(cursor2.getColumnIndex("_id")));
+                        if(cursor2.getString(cursor2.getColumnIndex("syncState")).equals("12")){
+                            noteArrayNoNeed.add(cursor2.getString(cursor2.getColumnIndex("_id")));
+                        }
+                    }while (cursor2.moveToNext());
+                }
 
                 final AVQuery<AVObject> statusQuery = new AVQuery<>("task");
                 statusQuery.whereEqualTo("userId", userId);
@@ -470,21 +492,34 @@ public class SyncActivity extends Activity {
                         if(!list.isEmpty()){
                             for (int i=0;i<list.toArray().length;i++){
                                 SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
-                                db.execSQL("insert into task (_id,content,type,time,state,syncState) values(?,?,?,?,?,?)",new String[]{list.get(i).get("task_id").toString(),list.get(i).get("content").toString().trim(), list.get(i).get("type").toString(),list.get(i).get("time").toString(),list.get(i).get("state").toString(),"12"});
-                                syncStr+="同步任务成功:"+list.get(i).get("content").toString()+"\n";
-                                syncInfo.setText(syncStr);
-                                syncTrue++;
+                                if(taskArrayNoNeed.indexOf(list.get(i).get("task_id").toString())!=-1){
+                                    //存在，状态为已更新的不更新
+                                }else if(taskArrayAll.indexOf(list.get(i).get("task_id").toString())==-1){
+                                    //不存在插入
+                                    db.execSQL("insert into task (_id,content,type,time,state,syncState) values(?,?,?,?,?,?)",new String[]{list.get(i).get("task_id").toString(),list.get(i).get("content").toString().trim(), list.get(i).get("type").toString(),list.get(i).get("time").toString(),list.get(i).get("state").toString(),"12"});
+                                    syncStr+="同步任务成功:"+list.get(i).get("content").toString()+"\n";
+                                    syncInfo.setText(syncStr);
+                                    syncTrue++;
+                                }else {
+                                    //存在覆盖
+                                    db.execSQL("UPDATE task SET content = ? WHERE _id = ? ",new String[]{list.get(i).get("content").toString().trim(),list.get(i).get("task_id").toString()});
+                                    db.execSQL("UPDATE task SET type = ? WHERE _id = ? ",new String[]{list.get(i).get("type").toString(),list.get(i).get("task_id").toString()});
+                                    db.execSQL("UPDATE task SET time = ? WHERE _id = ? ",new String[]{list.get(i).get("time").toString(),list.get(i).get("task_id").toString()});
+                                    db.execSQL("UPDATE task SET state = ? WHERE _id = ? ",new String[]{list.get(i).get("state").toString(),list.get(i).get("task_id").toString()});
+                                    db.execSQL("UPDATE task SET syncState = ? WHERE _id = ? ",new String[]{"12",list.get(i).get("task_id").toString()});
+                                    syncStr+="同步任务成功:"+list.get(i).get("content").toString()+"\n";
+                                    syncInfo.setText(syncStr);
+                                    syncTrue++;
+                                }
                             }
                         }else {
                             syncStr+="同步任务信息为空\n";
                         }
-
-
                     }
                 });
 
                 final AVQuery<AVObject> statusQuery2 = new AVQuery<>("note");
-                statusQuery.whereEqualTo("userId", userId);
+                statusQuery2.whereEqualTo("userId", userId);
 
                 AVQuery<AVObject> query2 = AVQuery.or(Arrays.asList(statusQuery2));
                 query2.findInBackground(new FindCallback<AVObject>() {
@@ -493,19 +528,83 @@ public class SyncActivity extends Activity {
                         if(!list.isEmpty()){
                             for (int i=0;i<list.toArray().length;i++){
                                 SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
-                                db.execSQL("insert into note (_id,note_time,note_content,syncState) values(?,?,?,?)",new String[]{list.get(i).get("note_id").toString(),list.get(i).get("note_time").toString(), list.get(i).get("note_content").toString(),"12"});
-                                syncStr+="同步便签成功:"+list.get(i).get("note_content").toString()+"\n";
-                                syncInfo.setText(syncStr);
-                                syncTrue++;
+                                if(noteArrayNoNeed.indexOf(list.get(i).get("note_id").toString())!=-1){
+                                    //存在，状态为已更新的不更新
+                                }else if(noteArrayAll.indexOf(list.get(i).get("note_id").toString())==-1){
+                                    //不存在插入
+                                    db.execSQL("insert into note (_id,content,type,time,state,syncState) values(?,?,?,?,?,?)",new String[]{list.get(i).get("note_id").toString(),list.get(i).get("content").toString().trim(), list.get(i).get("type").toString(),list.get(i).get("time").toString(),list.get(i).get("state").toString(),"12"});
+                                    syncStr+="同步任务成功:"+list.get(i).get("content").toString()+"\n";
+                                    syncInfo.setText(syncStr);
+                                    syncTrue++;
+                                }else {
+                                    //存在覆盖
+                                    db.execSQL("UPDATE note SET content = ? WHERE _id = ? ",new String[]{list.get(i).get("content").toString().trim(),list.get(i).get("note_id").toString()});
+                                    db.execSQL("UPDATE note SET type = ? WHERE _id = ? ",new String[]{list.get(i).get("type").toString(),list.get(i).get("note_id").toString()});
+                                    db.execSQL("UPDATE note SET time = ? WHERE _id = ? ",new String[]{list.get(i).get("time").toString(),list.get(i).get("note_id").toString()});
+                                    db.execSQL("UPDATE note SET state = ? WHERE _id = ? ",new String[]{list.get(i).get("state").toString(),list.get(i).get("note_id").toString()});
+                                    db.execSQL("UPDATE note SET syncState = ? WHERE _id = ? ",new String[]{"12",list.get(i).get("note_id").toString()});
+                                    syncStr+="同步任务成功:"+list.get(i).get("content").toString()+"\n";
+                                    syncInfo.setText(syncStr);
+                                    syncTrue++;
+                                }
                             }
                         }else {
-                            syncStr+="同步便签信息为空\n";
+                            syncStr+="同步任务信息为空\n";
                         }
-
-
                     }
                 });
-                syncInfo.setText(syncStr);
+
+//                SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+//                db.execSQL("delete from  note ",new String[]{});
+//                db.execSQL("delete from  task ",new String[]{});
+//
+//
+//                final AVQuery<AVObject> statusQuery1 = new AVQuery<>("task");
+//                statusQuery1.whereEqualTo("userId", userId);
+//
+//                AVQuery<AVObject> query1 = AVQuery.or(Arrays.asList(statusQuery1));
+//                query1.findInBackground(new FindCallback<AVObject>() {
+//                    @Override
+//                    public void done(List<AVObject> list, AVException e) {
+//                        if(!list.isEmpty()){
+//                            for (int i=0;i<list.toArray().length;i++){
+//                                SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+//                                db.execSQL("insert into task (_id,content,type,time,state,syncState) values(?,?,?,?,?,?)",new String[]{list.get(i).get("task_id").toString(),list.get(i).get("content").toString().trim(), list.get(i).get("type").toString(),list.get(i).get("time").toString(),list.get(i).get("state").toString(),"12"});
+//                                syncStr+="同步任务成功:"+list.get(i).get("content").toString()+"\n";
+//                                syncInfo.setText(syncStr);
+//                                syncTrue++;
+//                            }
+//                        }else {
+//                            syncStr+="同步任务信息为空\n";
+//                        }
+//
+//
+//                    }
+//                });
+//
+//                final AVQuery<AVObject> statusQuery2 = new AVQuery<>("note");
+//                statusQuery.whereEqualTo("userId", userId);
+//
+//                AVQuery<AVObject> query2 = AVQuery.or(Arrays.asList(statusQuery2));
+//                query2.findInBackground(new FindCallback<AVObject>() {
+//                    @Override
+//                    public void done(List<AVObject> list, AVException e) {
+//                        if(!list.isEmpty()){
+//                            for (int i=0;i<list.toArray().length;i++){
+//                                SQLiteDatabase db = MainActivity.datebaseHelper.getWritableDatabase();
+//                                db.execSQL("insert into note (_id,note_time,note_content,syncState) values(?,?,?,?)",new String[]{list.get(i).get("note_id").toString(),list.get(i).get("note_time").toString(), list.get(i).get("note_content").toString(),"12"});
+//                                syncStr+="同步便签成功:"+list.get(i).get("note_content").toString()+"\n";
+//                                syncInfo.setText(syncStr);
+//                                syncTrue++;
+//                            }
+//                        }else {
+//                            syncStr+="同步便签信息为空\n";
+//                        }
+//
+//
+//                    }
+//                });
+//                syncInfo.setText(syncStr);
                 new Thread(new Runnable(){
                     public void run(){
                         int min=500;

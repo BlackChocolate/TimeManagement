@@ -2,6 +2,7 @@ package com.superstar.sukurax.timemanagement;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -108,17 +109,17 @@ public class RemindSettingActivity extends Activity {
         TabHost host = (TabHost)findViewById(R.id.tabHost);
         host.setup();
 
-        TabHost.TabSpec spec = host.newTabSpec("今日");
+        TabHost.TabSpec spec = host.newTabSpec("today");
         spec.setContent(R.id.tab1);
         spec.setIndicator("今日");
         host.addTab(spec);
 
-        spec = host.newTabSpec("本周");
+        spec = host.newTabSpec("week");
         spec.setContent(R.id.tab2);
         spec.setIndicator("本周");
         host.addTab(spec);
 
-        spec = host.newTabSpec("本月");
+        spec = host.newTabSpec("month");
         spec.setContent(R.id.tab3);
         spec.setIndicator("本月");
         host.addTab(spec);
@@ -144,66 +145,113 @@ public class RemindSettingActivity extends Activity {
         int hour = cl.get(Calendar.HOUR_OF_DAY);
         int minute = cl.get(Calendar.MINUTE);
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        cal.setFirstDayOfWeek(Calendar.MONDAY);// 设置一个星期的第一天，按中国的习惯一个星期的第一天是星期一
+        int dayWeek = cal.get(Calendar.DAY_OF_WEEK);// 获得当前日期是一个星期的第几天
+        if(dayWeek==1){
+            dayWeek = 8;
+        }
+        cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - dayWeek);// 根据日历的规则，给当前日期减去星期几与一个星期第一天的差值
+        Date mondayDate = cal.getTime();
+        String weekBegin = sdf.format(mondayDate);
+        System.out.println("所在周星期一的日期：" + weekBegin);
+
+        cal.add(Calendar.DATE, 4 +cal.getFirstDayOfWeek());
+        Date sundayDate = cal.getTime();
+        String weekEnd = sdf.format(sundayDate);
+        System.out.println("所在周星期日的日期：" + weekEnd);
+
+        Integer weekBeginDay=Integer.parseInt(weekBegin.split("-")[2]);
+        Integer weekEndDay=Integer.parseInt(weekEnd.split("-")[2]);
         today.setText(monthC+"月"+day+"日");
-        week.setText(monthC+"月"+day+"-"+(day+7)+"日");
-        month.setText(monthC+"月1-30日");
+        week.setText(monthC+"月"+weekBeginDay+"-"+""+weekEndDay+"日");
+        month.setText(monthC+"月");
 
         //加载SQLite数据库
         Cursor cursor=datebaseHelper.getReadableDatabase().rawQuery(
                 "select * from task ",new String[]{}
         );
+
         if (cursor.moveToFirst()) {
             do{
                 //逻辑
+                //"2018-6-5 15:46"
+                String timeCursor=cursor.getString(cursor.getColumnIndex("time"));
+                Integer timeCursorYear=Integer.parseInt(timeCursor.split("-")[0]);
+                Integer timeCursorMonth=Integer.parseInt(timeCursor.split("-")[1]);
+                Integer timeCursorDay=Integer.parseInt(timeCursor.split(" ")[0].split("-")[2]);
+                //当天判断
+                if(timeCursorYear==year&timeCursorMonth==monthC&timeCursorDay==day){
+                    if(cursor.getString(cursor.getColumnIndex("state")).equals("0")){
+                        todayTrueNum++;
+                    }else{
+                        todayFalseNum++;
+                    }
+                }
+                //临近一周判断
+                SimpleDateFormat todayTime = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat sdffrom= new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat sdfto = new SimpleDateFormat("yyyy-MM-dd");
+                Date today=null,to = null,from=null;
+                try {
+                    today=todayTime.parse(year+"-"+monthC+"-"+day);
+                    from= sdffrom.parse(weekBegin);
+                    to= sdfto.parse(weekEnd);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                System.out.println();
+                if(belongCalendar(today,from,to)){
+                    if(cursor.getString(cursor.getColumnIndex("state")).equals("0")){
+                        weekTrueNum++;
+                    }else{
+                        weekFalseNum++;
+                    }
+                }
+                //当月判断
+                if(timeCursorYear==year&timeCursorMonth==monthC){
+                    if(cursor.getString(cursor.getColumnIndex("state")).equals("0")){
+                        monthTrueNum++;
+                    }else{
+                        monthFalseNum++;
+                    }
+                }
             }while (cursor.moveToNext());
         }
-        todayTrue.setText("1");
-        todayFalse.setText("1");
+        todayTrue.setText(todayTrueNum);
+        todayFalse.setText(todayFalseNum);
         todayRatingBar.setNumStars(5);
-        todayRatingBar.setRating(1);
-        weekTrue.setText("3");
-        weekFalse.setText("2");
+        todayRatingBar.setRating((int)(Math.ceil(todayTrueNum/(todayTrueNum+todayFalseNum))));
+        weekTrue.setText(weekTrueNum);
+        weekFalse.setText(weekFalseNum);
         weekRatingBar.setNumStars(5);
-        weekRatingBar.setRating(2);
-        monthTrue.setText("3");
-        monthFalse.setText("3");
+        weekRatingBar.setRating((int)(Math.ceil(weekTrueNum/(weekTrueNum+weekFalseNum))));
+        monthTrue.setText(monthTrueNum);
+        monthFalse.setText(monthFalseNum);
         monthRatingBar.setNumStars(5);
-        monthRatingBar.setRating(3);
+        monthRatingBar.setRating((int)(Math.ceil(monthTrueNum/(monthTrueNum+monthFalseNum))));
 
     }
+    public static boolean belongCalendar(Date time, Date from, Date to) {
+        Calendar date = Calendar.getInstance();
+        date.setTime(time);
 
+        Calendar after = Calendar.getInstance();
+        after.setTime(from);
+
+        Calendar before = Calendar.getInstance();
+        before.setTime(to);
+
+        if (date.after(after) && date.before(before)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
 
-//    String week1to7(){
-//        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd"); //设置时间格式
-//        Calendar cal = Calendar.getInstance();
-//        Date time= null;
-//        try {
-//            time = sdf.parse("2015-9-4 14:22:47");
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        cal.setTime(time);
-//        System.out.println("要计算日期为:"+sdf.format(cal.getTime())); //输出要计算日期
-//
-//        //判断要计算的日期是否是周日，如果是则减一天计算周六的，否则会出问题，计算到下一周去了
-//        int dayWeek = cal.get(Calendar.DAY_OF_WEEK);//获得当前日期是一个星期的第几天
-//        if(1 == dayWeek) {
-//            cal.add(Calendar.DAY_OF_MONTH, -1);
-//        }
-//
-//        cal.setFirstDayOfWeek(Calendar.MONDAY);//设置一个星期的第一天，按中国的习惯一个星期的第一天是星期一
-//
-//        int day = cal.get(Calendar.DAY_OF_WEEK);//获得当前日期是一个星期的第几天
-//        cal.add(Calendar.DATE, cal.getFirstDayOfWeek()-day);//根据日历的规则，给当前日期减去星期几与一个星期第一天的差值
-//        System.out.println("所在周星期一的日期："+sdf.format(cal.getTime()));
-//        System.out.println(cal.getFirstDayOfWeek()+"-"+day+"+6="+(cal.getFirstDayOfWeek()-day+6));
-//
-//        cal.add(Calendar.DATE, 6);
-//        System.out.println("所在周星期日的日期："+sdf.format(cal.getTime()));
-//        return sdf.format(cal.getTime())+sdf.format(cal.getTime());
-//    }
 }

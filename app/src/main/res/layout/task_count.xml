@@ -277,7 +277,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/widget_margin"
                             android:layout_marginLeft="@dimen/widget_margin"
-                            android:layout_marginRight="@dimen/widget_margin"
                             android:gravity="center"
                             android:orientation="horizontal">
                             <TextView
